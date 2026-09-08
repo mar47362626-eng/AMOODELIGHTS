@@ -87,7 +87,7 @@
         <input id="authAccountName" placeholder="Account name" autocomplete="name" hidden>
         <input id="authAccountNumber" placeholder="Account number" inputmode="numeric" autocomplete="off" hidden>
         <input id="authEmail" type="email" placeholder="Email address" autocomplete="email" required>
-        <input id="authPassword" type="password" placeholder="Password" autocomplete="current-password" required>
+        <input id="authPassword" type="password" placeholder="Password (minimum 8 characters)" minlength="8" autocomplete="current-password" required>
         <button class="rider-button" type="submit">Continue</button>
         <div id="authMessage" class="message" aria-live="polite"></div>
       </form>
@@ -163,6 +163,7 @@
       const message = document.getElementById('authMessage');
       const submitButton = authForm.querySelector('button[type="submit"]');
       const payload = { name: document.getElementById('authName').value, phone: document.getElementById('authPhone').value, nin: document.getElementById('authNin').value, guarantorName: document.getElementById('authGuarantorName').value, guarantorPhone: document.getElementById('authGuarantorPhone').value, bankName: document.getElementById('authBankName').value, accountName: document.getElementById('authAccountName').value, accountNumber: document.getElementById('authAccountNumber').value, email: document.getElementById('authEmail').value, password: document.getElementById('authPassword').value };
+      if (payload.password.length < 8) { message.textContent = 'Password must be at least 8 characters.'; return; }
       message.textContent = registerMode ? 'Creating rider account...' : 'Signing in...';
       submitButton.disabled = true;
       try {

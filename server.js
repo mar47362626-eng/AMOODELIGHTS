@@ -417,8 +417,8 @@ const server = http.createServer((req, res) => {
 
   if (url === '/api/riders/register' && req.method === 'POST') {
     readRequestBody(req, (parseError, credentials) => {
-      if (parseError || !credentials.name || !credentials.email || !credentials.password || !credentials.phone || !credentials.nin || !credentials.guarantorName || !credentials.guarantorPhone || !credentials.bankName || !credentials.accountName || !credentials.accountNumber) {
-        sendJson(res, 400, { error: 'Name, email, phone, NIN, guarantor, bank name, account name, account number, and password are required' });
+      if (parseError || !credentials.name || !credentials.email || !credentials.password || String(credentials.password).length < 8 || !credentials.phone || !credentials.nin || !credentials.guarantorName || !credentials.guarantorPhone || !credentials.bankName || !credentials.accountName || !credentials.accountNumber) {
+        sendJson(res, 400, { error: 'Name, email, phone, NIN, guarantor, bank name, account name, account number, and a password of at least 8 characters are required' });
         return;
       }
       const riders = readJson('rider.json');
@@ -441,6 +441,10 @@ const server = http.createServer((req, res) => {
     readRequestBody(req, (parseError, credentials) => {
       const riders = readJson('rider.json');
       const email = String(credentials.email || '').trim().toLowerCase();
+      if (parseError || String(credentials.password || '').length < 8) {
+        sendJson(res, 400, { error: 'Password must be at least 8 characters' });
+        return;
+      }
       const rider = riders.find(item => item.email === email && item.password === String(credentials.password || ''));
       if (parseError || !rider) {
         sendJson(res, 401, { error: 'Invalid rider email or password' });
