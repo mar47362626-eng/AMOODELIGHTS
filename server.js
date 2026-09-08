@@ -17,6 +17,7 @@ const supabaseEnabled = Boolean(supabaseServiceKey);
 const brevoApiKey = process.env.BREVO_API_KEY || '';
 const brevoSenderEmail = process.env.BREVO_SENDER_EMAIL || '';
 const brevoSenderName = process.env.BREVO_SENDER_NAME || 'Amoo Delights';
+const supabaseCollections = new Map();
 
 const mimeTypes = {
   '.html': 'text/html; charset=utf-8',
@@ -76,6 +77,8 @@ const data = {
 };
 
 function readJson(fileName, fallback = []) {
+  const entity = supabaseEntityName(fileName);
+  if (supabaseCollections.has(entity)) return supabaseCollections.get(entity);
   try {
     return JSON.parse(fs.readFileSync(path.join(__dirname, fileName), 'utf8') || JSON.stringify(fallback));
   } catch (error) {
@@ -85,6 +88,7 @@ function readJson(fileName, fallback = []) {
 
 function writeJson(fileName, value) {
   fs.writeFileSync(path.join(__dirname, fileName), JSON.stringify(value, null, 2), 'utf8');
+  supabaseCollections.set(supabaseEntityName(fileName), value);
   mirrorJsonCollection(fileName, value);
 }
 
@@ -106,9 +110,28 @@ async function mirrorJsonCollection(fileName, records) {
   }
 }
 
-function syncExistingCollections() {
+async function hydrateSupabaseCollections() {
+  const fileNames = ['admin-login.json', 'inbox.json', 'order.json', 'product.json', 'rider-messages.json', 'rider.json', 'user.json', 'withdrawals.json'];
   if (!supabaseEnabled) return;
-  ['admin-login.json', 'inbox.json', 'order.json', 'product.json', 'rider-messages.json', 'rider.json', 'user.json', 'withdrawals.json'].forEach(fileName => mirrorJsonCollection(fileName, readJson(fileName)));
+  for (const fileName of fileNames) {
+    const entity = supabaseEntityName(fileName);
+    try {
+      const response = await fetch(`${supabaseUrl}/rest/v1/app_data?entity=eq.${encodeURIComponent(entity)}&select=records`, {
+        headers: { apikey: supabaseServiceKey, Authorization: `Bearer ${supabaseServiceKey}` }
+      });
+      if (!response.ok) throw new Error(`${response.status} ${await response.text()}`);
+      const rows = await response.json();
+      if (rows.length) {
+        supabaseCollections.set(entity, Array.isArray(rows[0].records) ? rows[0].records : []);
+      } else {
+        const localRecords = readJson(fileName);
+        supabaseCollections.set(entity, localRecords);
+        await mirrorJsonCollection(fileName, localRecords);
+      }
+    } catch (error) {
+      console.error(`Supabase load failed for ${fileName}: ${error.message}`);
+    }
+  }
 }
 
 function readRequestBody(req, callback) {
@@ -855,10 +878,12 @@ const server = http.createServer((req, res) => {
   });
 });
 
-server.listen(port, hostname, () => {
-  console.log(`Server running at http://${hostname}:${port}`);
-  if (!supabaseEnabled) console.log('Supabase sync disabled. Set SUPABASE_SERVICE_ROLE_KEY in the server environment.');
-  syncExistingCollections();
+hydrateSupabaseCollections().finally(() => {
+  server.listen(port, hostname, () => {
+    console.log(`Server running at http://${hostname}:${port}`);
+    if (!supabaseEnabled) console.log('Supabase sync disabled. Set SUPABASE_SERVICE_ROLE_KEY in the server environment.');
+    if (supabaseEnabled) console.log('Supabase is the primary data source.');
+  });
 });
 /*
 const http = require('http');
