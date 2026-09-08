@@ -10,6 +10,8 @@
     body { min-height: 100vh; background: #f8f3ed; color: var(--rider-ink); }
     .rider-shell { width: min(1180px, calc(100% - 2rem)); margin: 0 auto; padding: 2rem 0 4rem; }
     .rider-header { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 2rem; }
+    .top-notification { position: fixed; top: 0; right: 0; left: 0; z-index: 100; display: flex; justify-content: center; padding: 0.8rem 1rem; background: var(--rider-accent); color: #fff; box-shadow: 0 5px 18px rgba(0, 0, 0, 0.18); font-size: 0.9rem; font-weight: 800; text-align: center; }
+    .top-notification[hidden] { display: none; }
     .rider-brand { color: var(--rider-accent); font: 700 1.35rem Fraunces, Georgia, serif; text-decoration: none; }
     .rider-header-actions { display: flex; align-items: center; gap: 0.75rem; }
     .notification-wrap { position: relative; }
@@ -79,6 +81,7 @@
   </style>
 </head>
 <body>
+  <div id="riderTopNotification" class="top-notification" role="status" aria-live="polite" hidden></div>
   <div id="authScreen" class="auth-screen">
     <section class="auth-card">
       <a class="rider-brand" href="index.html">Amoo Rider</a>
@@ -135,13 +138,15 @@
     let registerMode = false;
     let rider = null;
     let riderNotifications = [];
+    let previousRiderNotificationIds = null;
     try { rider = JSON.parse(localStorage.getItem('amooRider') || 'null'); } catch (error) { localStorage.removeItem('amooRider'); }
     const authScreen = document.getElementById('authScreen');
     const riderApp = document.getElementById('riderApp');
     const authForm = document.getElementById('authForm');
     const formatMoney = value => `₦${Number(value || 0).toLocaleString()}`;
     const escapeHtml = value => String(value ?? '').replace(/[&<>"']/g, character => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[character]));
-    function renderRiderNotifications(orders, messages) { const seen = JSON.parse(localStorage.getItem(`amooRiderSeen-${rider.id}`) || '[]'); riderNotifications = [...orders.filter(order => order.riderId === rider.id).map(order => ({ id: `order-${order.orderId}`, title: `Order assigned: ${order.orderId}`, detail: order.name || order.food || 'Food order' })), ...messages.filter(message => message.senderRole === 'admin').map(message => ({ id: `message-${message.id}`, title: 'Message from admin', detail: message.message }))].filter(item => !seen.includes(item.id)).slice(-12).reverse(); const badge = document.getElementById('riderNotificationBadge'); badge.textContent = riderNotifications.length; badge.hidden = !riderNotifications.length; document.getElementById('riderNotificationPanel').innerHTML = riderNotifications.length ? riderNotifications.map(item => `<div class="notification-item"><strong>${escapeHtml(item.title)}</strong><span>${escapeHtml(item.detail)}</span></div>`).join('') : '<div class="notification-item">No new notifications.</div>'; }
+    function showRiderTopNotification(message) { const banner = document.getElementById('riderTopNotification'); banner.textContent = message; banner.hidden = false; window.clearTimeout(showRiderTopNotification.timer); showRiderTopNotification.timer = window.setTimeout(() => { banner.hidden = true; }, 7000); }
+    function renderRiderNotifications(orders, messages) { const items = [...orders.filter(order => order.riderId === rider.id).map(order => ({ id: `order-${order.orderId}`, title: `Order assigned: ${order.orderId}`, detail: order.name || order.food || 'Food order' })), ...messages.filter(message => message.senderRole === 'admin').map(message => ({ id: `message-${message.id}`, title: 'Message from admin', detail: message.message }))]; const itemIds = items.map(item => item.id); if (previousRiderNotificationIds) { const newItem = items.find(item => !previousRiderNotificationIds.includes(item.id)); if (newItem) showRiderTopNotification(`${newItem.title}: ${newItem.detail}`); } previousRiderNotificationIds = itemIds; const seen = JSON.parse(localStorage.getItem(`amooRiderSeen-${rider.id}`) || '[]'); riderNotifications = items.filter(item => !seen.includes(item.id)).slice(-12).reverse(); const badge = document.getElementById('riderNotificationBadge'); badge.textContent = riderNotifications.length; badge.hidden = !riderNotifications.length; document.getElementById('riderNotificationPanel').innerHTML = riderNotifications.length ? riderNotifications.map(item => `<div class="notification-item"><strong>${escapeHtml(item.title)}</strong><span>${escapeHtml(item.detail)}</span></div>`).join('') : '<div class="notification-item">No new notifications.</div>'; }
     document.getElementById('riderNotificationButton').addEventListener('click', () => { const panel = document.getElementById('riderNotificationPanel'); panel.hidden = !panel.hidden; if (!panel.hidden) { localStorage.setItem(`amooRiderSeen-${rider.id}`, JSON.stringify(riderNotifications.map(item => item.id))); renderRiderNotifications([], []); } });
 
     function renderAuth() {

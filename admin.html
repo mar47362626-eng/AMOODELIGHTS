@@ -21,6 +21,9 @@
     .admin-main { min-width: 0; padding: 2rem clamp(1rem, 4vw, 3.5rem) 4rem; }
     .admin-shell { width: min(1180px, 100%); margin: 0 auto; }
     .admin-header { display: flex; justify-content: space-between; align-items: end; gap: 1rem; margin-bottom: 2rem; }
+    .admin-header-actions { display: flex; align-items: center; gap: 0.75rem; }
+    .top-notification { position: fixed; top: 0; right: 0; left: 0; z-index: 100; display: flex; justify-content: center; padding: 0.8rem 1rem; background: var(--tomato); color: #fff; box-shadow: 0 5px 18px rgba(0, 0, 0, 0.18); font-size: 0.9rem; font-weight: 800; text-align: center; }
+    .top-notification[hidden] { display: none; }
     .admin-header h1 { color: var(--ink); font-size: clamp(2rem, 5vw, 3.5rem); }
     .admin-header p { color: var(--muted); }
     .notification-wrap { position: relative; }
@@ -148,6 +151,7 @@
   </style>
 </head>
 <body>
+  <div id="adminTopNotification" class="top-notification" role="status" aria-live="polite" hidden></div>
   <div id="adminAuthScreen" class="admin-auth-screen">
     <section class="admin-auth-card">
       <p class="eyebrow">Amoo Delights</p><h1 id="adminAuthTitle">Admin login</h1><p id="adminAuthLead">Sign in to manage riders, orders, and operations.</p>
@@ -174,7 +178,7 @@
       <div class="admin-shell" id="overview">
         <header class="admin-header">
           <div><p class="eyebrow">Amoo Delights</p><h1>Admin dashboard</h1><p>Monitor customers, orders, and messages.</p></div>
-          <div style="display:flex;align-items:center;gap:0.75rem"><div class="notification-wrap"><button id="adminNotificationButton" class="notification-button" type="button" aria-label="Notifications">&#128276;<span id="adminNotificationBadge" class="notification-badge" hidden>0</span></button><div id="adminNotificationPanel" class="notification-panel" hidden></div></div><a class="admin-back" href="index.html">View website ↗</a></div>
+          <div class="admin-header-actions"><div class="notification-wrap"><button id="adminNotificationButton" class="notification-button" type="button" aria-label="Notifications">&#128276;<span id="adminNotificationBadge" class="notification-badge" hidden>0</span></button><div id="adminNotificationPanel" class="notification-panel" hidden></div></div><a class="admin-back" href="index.html">View website ↗</a></div>
         </header>
         <section class="admin-stats" aria-label="Dashboard summary" data-view="overview">
           <div class="admin-stat"><span>Customers</span><strong id="userCount">0</strong></div>
@@ -205,9 +209,11 @@
     let dashboardRiders = [];
     let dashboardOrders = [];
     let adminNotifications = [];
+    let previousAdminOrderIds = null;
     const adminAuthScreen = document.getElementById('adminAuthScreen');
     const adminLayout = document.getElementById('adminLayout');
-    function renderAdminNotifications(orders) { const seen = JSON.parse(localStorage.getItem('amooAdminSeenOrders') || '[]'); adminNotifications = orders.slice().reverse().filter(order => !seen.includes(order.orderId)).slice(0, 12); const badge = document.getElementById('adminNotificationBadge'); badge.textContent = adminNotifications.length; badge.hidden = !adminNotifications.length; document.getElementById('adminNotificationPanel').innerHTML = adminNotifications.length ? adminNotifications.map(order => `<div class="notification-item"><strong>New order ${escapeHtml(order.orderId)}</strong><span>${escapeHtml(order.name || order.food || 'Food order')} · ${escapeHtml(order.total || '')}</span></div>`).join('') : '<div class="notification-item">No new order notifications.</div>'; }
+    function showAdminTopNotification(message) { const banner = document.getElementById('adminTopNotification'); banner.textContent = message; banner.hidden = false; window.clearTimeout(showAdminTopNotification.timer); showAdminTopNotification.timer = window.setTimeout(() => { banner.hidden = true; }, 7000); }
+    function renderAdminNotifications(orders) { const orderIds = orders.map(order => order.orderId); if (previousAdminOrderIds) { const newOrder = orders.find(order => !previousAdminOrderIds.includes(order.orderId)); if (newOrder) showAdminTopNotification(`New order received: ${newOrder.orderId} · ${newOrder.name || newOrder.food || 'Food order'} · ${newOrder.total || ''}`); } previousAdminOrderIds = orderIds; const seen = JSON.parse(localStorage.getItem('amooAdminSeenOrders') || '[]'); adminNotifications = orders.slice().reverse().filter(order => !seen.includes(order.orderId)).slice(0, 12); const badge = document.getElementById('adminNotificationBadge'); badge.textContent = adminNotifications.length; badge.hidden = !adminNotifications.length; document.getElementById('adminNotificationPanel').innerHTML = adminNotifications.length ? adminNotifications.map(order => `<div class="notification-item"><strong>New order ${escapeHtml(order.orderId)}</strong><span>${escapeHtml(order.name || order.food || 'Food order')} · ${escapeHtml(order.total || '')}</span></div>`).join('') : '<div class="notification-item">No new order notifications.</div>'; }
     document.getElementById('adminNotificationButton').addEventListener('click', () => { const panel = document.getElementById('adminNotificationPanel'); panel.hidden = !panel.hidden; if (!panel.hidden) { localStorage.setItem('amooAdminSeenOrders', JSON.stringify(dashboardOrders.map(order => order.orderId))); renderAdminNotifications(dashboardOrders); } });
     function renderAdminAuth() {
       document.getElementById('adminAuthTitle').textContent = adminRegisterMode ? 'Admin registration' : 'Admin login';
