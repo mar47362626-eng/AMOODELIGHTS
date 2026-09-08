@@ -425,7 +425,7 @@
       renderRiders(riders, orders);
       renderWithdrawals(withdrawals);
     }
-    setInterval(() => { if (admin) loadDashboard().catch(() => {}); }, 15000);
+    setInterval(() => { if (admin && !document.hidden) loadDashboard().catch(() => {}); }, 3000);
     document.getElementById('productForm').addEventListener('submit', async event => {
       event.preventDefault();
       const form = event.currentTarget;
