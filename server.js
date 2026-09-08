@@ -376,8 +376,8 @@ const server = http.createServer((req, res) => {
 
   if (url === '/api/admin/register' && req.method === 'POST') {
     readRequestBody(req, (parseError, credentials) => {
-      if (parseError || !credentials.name || !credentials.email || !credentials.password) {
-        sendJson(res, 400, { error: 'Name, email, and password are required' });
+      if (parseError || !credentials.name || !credentials.email || !credentials.password || String(credentials.password).length < 8) {
+        sendJson(res, 400, { error: 'Name, email, and a password of at least 8 characters are required' });
         return;
       }
       const admins = readJson('admin-login.json');
@@ -400,6 +400,10 @@ const server = http.createServer((req, res) => {
     readRequestBody(req, (parseError, credentials) => {
       const admins = readJson('admin-login.json');
       const email = String(credentials.email || '').trim().toLowerCase();
+      if (parseError || String(credentials.password || '').length < 8) {
+        sendJson(res, 400, { error: 'Password must be at least 8 characters' });
+        return;
+      }
       const admin = admins.find(item => item.email === email && item.password === String(credentials.password || ''));
       if (parseError || !admin) {
         sendJson(res, 401, { error: 'Invalid admin email or password' });

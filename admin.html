@@ -144,7 +144,7 @@
   <div id="adminAuthScreen" class="admin-auth-screen">
     <section class="admin-auth-card">
       <p class="eyebrow">Amoo Delights</p><h1 id="adminAuthTitle">Admin login</h1><p id="adminAuthLead">Sign in to manage riders, orders, and operations.</p>
-      <form id="adminAuthForm" class="admin-auth-form"><input id="adminAuthName" placeholder="Full name" required hidden><input id="adminAuthEmail" type="email" placeholder="Email address" required><input id="adminAuthPassword" type="password" placeholder="Password" required><button type="submit">Continue</button><div id="adminAuthMessage" class="admin-auth-message"></div></form>
+      <form id="adminAuthForm" class="admin-auth-form"><input id="adminAuthName" placeholder="Full name" required hidden><input id="adminAuthEmail" type="email" placeholder="Email address" required><input id="adminAuthPassword" type="password" placeholder="Password (minimum 8 characters)" minlength="8" required><button type="submit">Continue</button><div id="adminAuthMessage" class="admin-auth-message"></div></form>
       <p class="admin-auth-switch"><span id="adminAuthSwitchText">New admin?</span> <button id="adminAuthSwitch" type="button">Register here</button></p>
     </section>
   </div>
@@ -189,7 +189,7 @@
   <script>
     const API_BASE = 'https://amoodelights.onrender.com';
     const nativeFetch = window.fetch.bind(window);
-    function fetch(input, options) { return nativeFetch(typeof input === 'string' && input.startsWith('/api/') ? `${API_BASE}${input}` : input, options); }
+    window.fetch = (input, options) => nativeFetch(typeof input === 'string' && input.startsWith('/api/') ? `${API_BASE}${input}` : input, options);
     if (localStorage.getItem('amooTheme') === 'dark') document.body.classList.add('dark-mode');
     const escapeHtml = value => String(value ?? '').replace(/[&<>"']/g, character => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[character]));
     let admin = null;
@@ -213,6 +213,7 @@
       const message = document.getElementById('adminAuthMessage');
       const submitButton = document.getElementById('adminAuthForm').querySelector('button[type="submit"]');
       const payload = { name: document.getElementById('adminAuthName').value, email: document.getElementById('adminAuthEmail').value, password: document.getElementById('adminAuthPassword').value };
+      if (payload.password.length < 8) { message.textContent = 'Password must be at least 8 characters.'; return; }
       message.textContent = adminRegisterMode ? 'Creating admin account...' : 'Signing in...';
       submitButton.disabled = true;
       try {
