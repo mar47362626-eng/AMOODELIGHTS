@@ -237,7 +237,7 @@
         </div>
         <div class="contact-grid">
           <form id="contactForm">
-            <input type="text" placeholder="Your Name" pattern="[A-Za-z][A-Za-z .'-]*" title="Use letters, spaces, apostrophes, or hyphens" required />
+            <input type="text" placeholder="Your Name" pattern="[A-Za-z][A-Za-z .'\-]*" title="Use letters, spaces, apostrophes, or hyphens" required />
             <input type="email" placeholder="Your Email" required />
             <textarea rows="4" placeholder="Tell us about your visit"></textarea>
             <button type="submit" class="btn btn-primary">Send Message</button>
@@ -292,7 +292,7 @@
         <form id="registerForm" onsubmit="submitRegister(event)">
           <div class="form-group">
             <label for="regName">Full Name *</label>
-            <input type="text" id="regName" name="regName" pattern="[A-Za-z][A-Za-z .'-]*" title="Use letters, spaces, apostrophes, or hyphens" required>
+            <input type="text" id="regName" name="regName" pattern="[A-Za-z][A-Za-z .'\-]*" title="Use letters, spaces, apostrophes, or hyphens" required>
           </div>
           <div class="form-group">
             <label for="regEmail">Email Address *</label>
@@ -372,7 +372,7 @@
 
         const loadInterval = setInterval(() => {
           if (currentProduct < totalProducts) {
-            const product = fallbackProducts[currentProduct];
+            const product = products[currentProduct];
             const productItem = document.createElement('div');
             productItem.className = 'product-item';
             productItem.innerHTML = `<span class="check-mark">✓</span> ${product.name}`;
