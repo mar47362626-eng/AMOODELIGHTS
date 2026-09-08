@@ -325,6 +325,9 @@
     </div>
 
     <script>
+      const API_BASE = 'https://amoodelights.onrender.com';
+      const nativeFetch = window.fetch.bind(window);
+      function fetch(input, options) { return nativeFetch(typeof input === 'string' && input.startsWith('/api/') ? `${API_BASE}${input}` : input, options); }
       // Products List
       const products = [
         { name: '🍚 Jollof Rice', price: '$12' },

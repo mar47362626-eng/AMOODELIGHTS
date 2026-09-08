@@ -169,6 +169,14 @@ function createDeliveryCode() {
 }
 
 const server = http.createServer((req, res) => {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  res.setHeader('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE,OPTIONS');
+  if (req.method === 'OPTIONS') {
+    res.writeHead(204);
+    res.end();
+    return;
+  }
   const url = req.url === '/' ? '/index.html' : req.url;
   const safePath = path.normalize(url).replace(/^\./, '');
   const filePath = path.join(__dirname, safePath);

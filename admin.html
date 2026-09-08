@@ -187,6 +187,9 @@
     </main>
   </div>
   <script>
+    const API_BASE = 'https://amoodelights.onrender.com';
+    const nativeFetch = window.fetch.bind(window);
+    function fetch(input, options) { return nativeFetch(typeof input === 'string' && input.startsWith('/api/') ? `${API_BASE}${input}` : input, options); }
     if (localStorage.getItem('amooTheme') === 'dark') document.body.classList.add('dark-mode');
     const escapeHtml = value => String(value ?? '').replace(/[&<>"']/g, character => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[character]));
     let admin = null;
