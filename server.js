@@ -9,7 +9,7 @@ try {
   if (error.code !== 'ENOENT') console.warn(`Unable to load .env: ${error.message}`);
 }
 
-const hostname = '127.0.0.1';
+const hostname = process.env.HOST || '0.0.0.0';
 const port = process.env.PORT || 3000;
 const supabaseUrl = process.env.SUPABASE_URL || 'https://kkpmhunxjjyltveaqjrr.supabase.co';
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_SECRET_KEY || '';
