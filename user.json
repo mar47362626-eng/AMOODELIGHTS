@@ -1,0 +1,29 @@
+[
+  {
+    "name": "James Vanessa",
+    "email": "jamesvasssan333@gmail.com",
+    "phone": "08051877195",
+    "address": "no 61 oke ola street ilishan ogun state",
+    "password": "Olamide44#",
+    "id": 1788779737709,
+    "createdAt": "2026-09-07T11:15:37.709Z"
+  },
+  {
+    "name": "Oluniyi Temilade",
+    "email": "oluniyitemilade@gmail.com",
+    "phone": "09743738",
+    "address": "olodo",
+    "password": "Olamide44#",
+    "id": 1788790896614,
+    "createdAt": "2026-09-07T14:21:36.614Z"
+  },
+  {
+    "name": "Oluniyi Temilade",
+    "email": "olunitemilade@gmail.com",
+    "phone": "09743738",
+    "address": "olodo",
+    "password": "Olamide44#",
+    "id": 1788813227710,
+    "createdAt": "2026-09-07T20:33:47.710Z"
+  }
+]

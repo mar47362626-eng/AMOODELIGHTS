@@ -1,0 +1,18 @@
+[
+  {
+    "id": "MSG-1788822878314",
+    "riderId": "RIDER-1788821998423",
+    "senderRole": "rider",
+    "senderName": "Oluniyi Temilade",
+    "message": "HELLO",
+    "createdAt": "2026-09-07T23:14:38.314Z"
+  },
+  {
+    "id": "MSG-1788822891350",
+    "riderId": "RIDER-1788821998423",
+    "senderRole": "admin",
+    "senderName": "olamide",
+    "message": "HOW ARE YOU",
+    "createdAt": "2026-09-07T23:14:51.350Z"
+  }
+]

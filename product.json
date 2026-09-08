@@ -1,0 +1,67 @@
+[
+  {
+    "id": 2,
+    "name": "White Rice",
+    "description": "Fluffy, perfectly seasoned white rice - a perfect side for any meal.",
+    "price": 8,
+    "image": "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=500&h=300&fit=crop",
+    "ingredients": [
+      "Long grain rice",
+      "Butter",
+      "Salt",
+      "Light seasoning"
+    ]
+  },
+  {
+    "id": 3,
+    "name": "Amola",
+    "description": "Delicious pounded yam served with savory sauce and protein.",
+    "price": 10,
+    "image": "https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?w=500&h=300&fit=crop",
+    "ingredients": [
+      "Fresh yam",
+      "Butter",
+      "Salt",
+      "Choice of sauce"
+    ]
+  },
+  {
+    "id": 4,
+    "name": "Fried Chicken",
+    "description": "Crispy, golden fried chicken seasoned with our special blend of spices.",
+    "price": 14,
+    "image": "https://images.unsplash.com/photo-1598103442097-8b74394b95c6?w=500&h=300&fit=crop",
+    "ingredients": [
+      "Chicken pieces",
+      "Secret spice blend",
+      "Oil for frying"
+    ]
+  },
+  {
+    "id": 5,
+    "name": "Vegetable Soup",
+    "description": "Hearty, nutritious soup loaded with fresh vegetables and herbs.",
+    "price": 9,
+    "image": "https://images.unsplash.com/photo-1547592166-23ac45744acd?w=500&h=300&fit=crop",
+    "ingredients": [
+      "Mixed vegetables",
+      "Herbs",
+      "Vegetable broth",
+      "Spices"
+    ]
+  },
+  {
+    "id": 6,
+    "name": "Pepper Soup",
+    "description": "Warming spicy pepper soup with meat and aromatic seasonings.",
+    "price": 11,
+    "image": "https://images.unsplash.com/photo-1600271886742-f049cd451bba?w=500&h=300&fit=crop",
+    "ingredients": [
+      "Meat",
+      "Fresh peppers",
+      "Ginger",
+      "Garlic",
+      "Spices"
+    ]
+  }
+]

@@ -1,0 +1,12 @@
+{
+  "name": "fresh-food-delivery",
+  "version": "1.0.0",
+  "description": "Node.js backend for the fresh food delivery website",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

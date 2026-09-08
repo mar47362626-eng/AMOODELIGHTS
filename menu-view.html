@@ -1,0 +1,1720 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Complete Menu - Fresh Food Delivery</title>
+    <meta
+      name="description"
+      content="Browse our complete menu of authentic African cuisine. View all dishes with detailed descriptions and prices."
+    />
+    <link rel="stylesheet" href="styles.css" />
+    <style>
+      .menu-view-header {
+        position: sticky;
+        top: 0;
+        z-index: 50;
+        padding: 5rem 2.5rem 4rem;
+        background: linear-gradient(120deg, rgba(179, 57, 57, 0.1), rgba(255, 255, 255, 0.95));
+        text-align: center;
+        border-bottom: 2px solid var(--border);
+        box-shadow: 0 8px 24px rgba(36, 28, 24, 0.12);
+      }
+
+      .back-link {
+        display: inline-block;
+        margin-bottom: 1.5rem;
+        color: var(--primary);
+        text-decoration: none;
+        font-weight: 700;
+        font-size: 0.95rem;
+        transition: all 0.2s ease;
+        padding: 0.5rem 1rem;
+        border-radius: 8px;
+      }
+
+      .back-link:hover {
+        background: rgba(179, 57, 57, 0.1);
+        transform: translateX(-4px);
+      }
+
+      .full-menu-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 3.2rem;
+        max-width: 1300px;
+        margin: 0 auto;
+        padding: 4.5rem 2.5rem;
+      }
+
+      .detailed-menu-card {
+        background: var(--surface);
+        border: 2px solid var(--border);
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow: 0 8px 25px rgba(47, 36, 29, 0.08);
+      }
+
+      #staticMenuGrid {
+        display: none;
+      }
+
+      .menu-view-heading {
+        margin: 0;
+        text-align: center;
+      }
+
+      .menu-view-title {
+        margin-bottom: 0.5rem;
+        font-size: 2.5rem;
+      }
+
+      .menu-view-lead {
+        max-width: none;
+        margin: 0;
+      }
+
+      .summary-total-label {
+        font-size: 1.1rem;
+      }
+
+      .payment-total-row {
+        padding-top: 0.8rem;
+        margin-top: 0.8rem;
+        border-top: 2px solid rgba(255, 255, 255, 0.2);
+      }
+
+      .payment-total-label {
+        font-size: 1.1rem;
+      }
+
+      .payment-total-value {
+        font-size: 1.3rem;
+      }
+
+      .payment-transfer-notice,
+      .confirmation-notice {
+        padding: 1rem;
+        margin-bottom: 1.5rem;
+        border-radius: 8px;
+      }
+
+      .payment-transfer-notice {
+        background: #fff3cd;
+        border-left: 4px solid #ffc107;
+      }
+
+      .payment-transfer-notice p {
+        margin: 0;
+        color: #856404;
+        font-weight: 600;
+      }
+
+      .confirmation-modal {
+        max-width: 480px;
+      }
+
+      .status-pending {
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: var(--primary);
+      }
+
+      .confirmation-detail {
+        margin: 0.5rem 0;
+        color: var(--text);
+      }
+
+      .confirmation-total {
+        color: var(--primary);
+        font-weight: 700;
+      }
+
+      .confirmation-notice {
+        background: #e3f2fd;
+        border-left: 4px solid #2196f3;
+      }
+
+      .confirmation-notice p {
+        margin: 0;
+        color: #1565c0;
+        font-weight: 600;
+      }
+    </style>
+  </head>
+  <body>
+    <style>
+
+      .modal {
+        display: none;
+        position: fixed;
+        inset: 0;
+        z-index: 1000;
+        padding: 1rem;
+        overflow-y: auto;
+        background: rgba(0, 0, 0, 0.72);
+      }
+
+      .modal.show {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .modal-content {
+        background-color: var(--surface);
+        padding: 3rem;
+        border-radius: 20px;
+        max-width: 520px;
+        width: 95%;
+        max-height: 90vh;
+        box-shadow: 0 25px 70px rgba(47, 36, 29, 0.25);
+        animation: slideIn 0.3s ease;
+        overflow-y: auto;
+        overflow-x: hidden;
+      }
+
+      .modal-content::-webkit-scrollbar {
+        width: 8px;
+      }
+
+      .modal-content::-webkit-scrollbar-track {
+        background: rgba(179, 57, 57, 0.05);
+        border-radius: 10px;
+      }
+
+      .modal-content::-webkit-scrollbar-thumb {
+        background: var(--primary);
+        border-radius: 10px;
+        transition: background 0.2s ease;
+      }
+
+      .modal-content::-webkit-scrollbar-thumb:hover {
+        background: var(--primary-dark);
+      }
+
+      @keyframes slideIn {
+        from {
+          transform: translateY(-50px);
+          opacity: 0;
+        }
+        to {
+          transform: translateY(0);
+          opacity: 1;
+        }
+      }
+
+      .modal-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1.8rem;
+        border-bottom: 3px solid var(--primary);
+        padding-bottom: 1rem;
+        position: sticky;
+        top: 0;
+        background: var(--surface);
+        z-index: 10;
+      }
+
+      .modal-header h2 {
+        margin: 0;
+        color: var(--primary);
+        font-size: 1.6rem;
+      }
+
+      .close-btn {
+        background: none;
+        border: none;
+        font-size: 1.8rem;
+        cursor: pointer;
+        color: var(--muted);
+        transition: color 0.2s ease;
+      }
+
+      .close-btn:hover {
+        color: var(--primary);
+      }
+
+      .form-group {
+        margin-bottom: 1.6rem;
+      }
+
+      .form-group label {
+        display: block;
+        margin-bottom: 0.6rem;
+        font-weight: 700;
+        color: var(--text);
+        font-size: 0.95rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+      }
+
+      .form-group input,
+      .form-group textarea {
+        width: 100%;
+        padding: 1.1rem;
+        border: 2px solid var(--border);
+        border-radius: 10px;
+        font: inherit;
+        color: var(--text);
+        background: #fafafa;
+        font-size: 0.95rem;
+        transition: all 0.3s ease;
+      }
+
+      .form-group input:focus,
+      .form-group textarea:focus {
+        outline: none;
+        border-color: var(--primary);
+        background: #fff;
+        box-shadow: 0 0 0 4px rgba(179, 57, 57, 0.1);
+      }
+
+      .form-group textarea {
+        resize: vertical;
+        min-height: 90px;
+        font-family: inherit;
+      }
+
+      .form-group input::placeholder,
+      .form-group textarea::placeholder {
+        color: var(--muted);
+      }
+
+      .order-summary {
+        padding: 1.3rem;
+        background: linear-gradient(135deg, rgba(179, 57, 57, 0.08), rgba(247, 201, 72, 0.08));
+        border-left: 4px solid var(--primary);
+        border-radius: 12px;
+        margin-bottom: 1.5rem;
+        position: sticky;
+        bottom: 60px;
+        z-index: 8;
+      }
+
+      .summary-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 0.6rem;
+      }
+
+      .summary-row:last-child {
+        margin-bottom: 0;
+        padding-top: 0.6rem;
+        border-top: 2px solid rgba(179, 57, 57, 0.2);
+        margin-top: 0.8rem;
+      }
+
+      .summary-label {
+        color: var(--text);
+        font-weight: 600;
+      }
+
+      .summary-value {
+        color: var(--primary);
+        font-weight: 700;
+        font-size: 1.05rem;
+      }
+
+      .total-row .summary-value {
+        font-size: 1.3rem;
+      }
+
+      .form-actions {
+        display: flex;
+        gap: 1rem;
+        margin-top: 1.8rem;
+        position: sticky;
+        bottom: 0;
+        background: var(--surface);
+        padding-top: 1rem;
+        z-index: 9;
+      }
+
+      .form-actions button {
+        flex: 1;
+        padding: 1rem;
+        border: none;
+        border-radius: 10px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        font-size: 0.95rem;
+      }
+
+      .btn-submit {
+        background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+        color: #fff;
+        box-shadow: 0 8px 20px rgba(179, 57, 57, 0.25);
+      }
+
+      .btn-submit:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 12px 30px rgba(179, 57, 57, 0.35);
+      }
+
+      .btn-submit:active {
+        transform: translateY(0);
+      }
+
+      .btn-cancel {
+        background: var(--border);
+        color: var(--text);
+        border: 2px solid #ddd;
+        transition: all 0.3s ease;
+      }
+
+      .btn-cancel:hover {
+        background: #e8e8e8;
+        border-color: var(--primary);
+      }
+
+      .form-group input[type="number"] {
+        font-size: 1rem;
+      }
+
+      /* Payment Modal Styles */
+      .payment-card {
+        background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+        color: #fff;
+        padding: 2rem;
+        border-radius: 15px;
+        margin-bottom: 1.5rem;
+        box-shadow: 0 8px 20px rgba(179, 57, 57, 0.2);
+      }
+
+      .payment-card h3 {
+        margin: 0 0 0.8rem 0;
+        font-size: 0.9rem;
+        opacity: 0.95;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+      }
+
+      .payment-details {
+        background: rgba(255, 255, 255, 0.1);
+        padding: 1.2rem;
+        border-radius: 10px;
+        margin-bottom: 1rem;
+      }
+
+      .payment-detail-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 0.8rem;
+        font-size: 0.95rem;
+      }
+
+      .payment-detail-row:last-child {
+        margin-bottom: 0;
+      }
+
+      .payment-label {
+        opacity: 0.9;
+      }
+
+      .payment-value {
+        font-weight: 700;
+        font-size: 1.1rem;
+      }
+
+      .payment-info {
+        background: rgba(179, 57, 57, 0.1);
+        border-left: 4px solid var(--primary);
+        padding: 1.2rem;
+        border-radius: 10px;
+        margin-bottom: 1.5rem;
+      }
+
+      .payment-info h4 {
+        margin: 0 0 0.8rem 0;
+        color: var(--primary);
+        font-size: 0.95rem;
+      }
+
+      .account-info {
+        background: #f5f5f5;
+        padding: 1rem;
+        border-radius: 8px;
+        margin-bottom: 0.8rem;
+        border: 2px solid var(--border);
+      }
+
+      .account-info p {
+        margin: 0.4rem 0;
+        color: var(--text);
+        font-weight: 600;
+      }
+
+      .account-label {
+        color: var(--muted);
+        font-weight: 600;
+        font-size: 0.85rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+      }
+
+      .account-value {
+        color: var(--primary);
+        font-weight: 700;
+        font-size: 1.1rem;
+      }
+
+      .order-pending {
+        background: linear-gradient(135deg, rgba(76, 175, 80, 0.1), rgba(76, 175, 80, 0.05));
+        border-left: 4px solid #4caf50;
+        padding: 1.5rem;
+        border-radius: 10px;
+        text-align: center;
+        margin-bottom: 1.5rem;
+      }
+
+      .order-pending h3 {
+        color: #4caf50;
+        margin: 0 0 0.5rem 0;
+        font-size: 1.3rem;
+      }
+
+      .order-pending p {
+        color: var(--text);
+        margin: 0.3rem 0;
+      }
+
+      .order-id {
+        background: #f5f5f5;
+        padding: 0.8rem;
+        border-radius: 8px;
+        margin-top: 1rem;
+        font-weight: 700;
+        color: var(--primary);
+      }
+
+      .confirmation-icon {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+      }
+
+      /* Tablets & Medium Devices: 3 columns */
+      @media (max-width: 1024px) {
+        .full-menu-grid {
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+          gap: 2.5rem;
+          padding: 3.5rem 2rem;
+        }
+
+        .modal-content {
+          width: 90%;
+          padding: 2rem;
+        }
+
+        .menu-view-header {
+          padding: 3rem 2rem;
+        }
+
+        .menu-image {
+          height: 200px;
+        }
+
+        .menu-details {
+          padding: 2rem;
+        }
+
+        .menu-details h3 {
+          font-size: 1.2rem;
+        }
+
+        .menu-details > p {
+          font-size: 0.95rem;
+        }
+      }
+
+      /* Tablets: 3 columns */
+      @media (min-width: 769px) and (max-width: 1024px) {
+        .full-menu-grid {
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+      }
+
+      /* Mobile: 2 columns */
+      @media (max-width: 768px) {
+        .full-menu-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          gap: 1.5rem;
+          padding: 1.5rem 0.8rem;
+        }
+
+        .menu-view-header {
+          padding: 1.8rem 1rem;
+        }
+
+        .menu-image {
+          height: 200px;
+        }
+
+        .menu-image::before {
+          font-size: 0.75rem;
+          padding: 0.4rem 0.8rem;
+        }
+
+        .detailed-menu-card {
+          border-radius: 12px;
+          box-shadow: 0 4px 12px rgba(47, 36, 29, 0.06);
+        }
+
+        .detailed-menu-card:hover {
+          transform: translateY(-8px);
+          box-shadow: 0 12px 30px rgba(179, 57, 57, 0.15);
+        }
+
+        .menu-details {
+          padding: 1.4rem;
+        }
+
+        .menu-details h3 {
+          font-size: 1rem;
+          margin-bottom: 0.4rem;
+        }
+
+        .menu-details > p {
+          font-size: 0.88rem;
+          line-height: 1.5;
+          margin-bottom: 0.6rem;
+        }
+
+        .menu-details .ingredients {
+          margin-bottom: 0.8rem;
+          padding: 0.8rem;
+          font-size: 0.8rem;
+        }
+
+        .menu-details .ingredients.show {
+          padding: 0.8rem;
+          margin-bottom: 0.8rem;
+        }
+
+        .menu-details .ingredients strong {
+          font-size: 0.75rem;
+          margin-bottom: 0.4rem;
+        }
+
+        .menu-footer {
+          padding-top: 0.8rem;
+          gap: 0.6rem;
+        }
+
+        .menu-price {
+          font-size: 1.1rem;
+        }
+
+        .btn-order {
+          padding: 0.5rem 0.9rem;
+          font-size: 0.8rem;
+          border-radius: 6px;
+        }
+
+        .modal-content {
+          width: 95%;
+          max-width: 100%;
+          margin: 1rem;
+          padding: 1.2rem;
+        }
+
+        .form-actions {
+          flex-direction: column;
+        }
+
+        .form-actions button {
+          padding: 0.8rem;
+        }
+
+        .modal-header h2 {
+          font-size: 1.2rem;
+        }
+      }
+
+      @media (max-width: 640px) {
+        .full-menu-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          gap: 1.2rem;
+          padding: 1.2rem 0.6rem;
+        }
+
+        .menu-image {
+          height: 180px;
+        }
+
+        .menu-image::before {
+          font-size: 0.7rem;
+          padding: 0.3rem 0.6rem;
+        }
+
+        .menu-view-header {
+          padding: 1.2rem 0.8rem;
+        }
+
+        .menu-view-header h1 {
+          font-size: 1.6rem;
+        }
+
+        .menu-details {
+          padding: 1.2rem;
+        }
+
+        .menu-details h3 {
+          font-size: 0.95rem;
+          margin-bottom: 0.3rem;
+        }
+
+        .menu-details > p {
+          font-size: 0.85rem;
+          line-height: 1.4;
+          margin-bottom: 0.5rem;
+        }
+
+        .menu-details .ingredients {
+          padding: 0.6rem;
+          font-size: 0.75rem;
+          margin-bottom: 0.6rem;
+        }
+
+        .menu-details .ingredients.show {
+          padding: 0.6rem;
+          margin-bottom: 0.6rem;
+        }
+
+        .menu-details .ingredients strong {
+          font-size: 0.7rem;
+          margin-bottom: 0.3rem;
+        }
+
+        .menu-footer {
+          padding-top: 0.8rem;
+          gap: 0.5rem;
+        }
+
+        .menu-price {
+          font-size: 1rem;
+        }
+
+        .btn-order {
+          padding: 0.45rem 0.8rem;
+          font-size: 0.75rem;
+        }
+
+        .modal-content {
+          width: 95%;
+          max-width: 95%;
+          margin: 0.5rem;
+          padding: 1rem;
+          border-radius: 14px;
+        }
+
+        .modal-header {
+          margin-bottom: 1rem;
+          padding-bottom: 0.6rem;
+        }
+
+        .modal-header h2 {
+          font-size: 1rem;
+        }
+
+        .close-btn {
+          font-size: 1.3rem;
+        }
+
+        .form-group {
+          margin-bottom: 1rem;
+        }
+
+        .form-group label {
+          font-size: 0.8rem;
+        }
+
+        .form-group input,
+        .form-group textarea {
+          padding: 0.7rem;
+          font-size: 0.85rem;
+        }
+
+        .form-actions {
+          flex-direction: column;
+          gap: 0.6rem;
+          margin-top: 1rem;
+        }
+
+        .form-actions button {
+          padding: 0.7rem;
+          font-size: 0.8rem;
+        }
+
+        .order-summary {
+          padding: 0.8rem;
+          margin-bottom: 0.8rem;
+          bottom: 40px;
+        }
+
+        .summary-row {
+          font-size: 0.85rem;
+        }
+
+        .summary-value {
+          font-size: 0.9rem;
+        }
+
+        .payment-card {
+          padding: 1.2rem;
+          margin-bottom: 1rem;
+        }
+
+        .payment-details {
+          padding: 0.8rem;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .full-menu-grid {
+          gap: 1rem;
+          padding: 1rem 0.6rem;
+        }
+
+        .menu-view-header {
+          padding: 1rem 0.6rem;
+        }
+
+        .menu-view-header h1 {
+          font-size: 1.4rem;
+        }
+
+        .back-link {
+          font-size: 0.8rem;
+          padding: 0.3rem 0.6rem;
+          margin-bottom: 0.8rem;
+        }
+
+        .menu-image {
+          height: 160px;
+        }
+
+        .menu-image::before {
+          font-size: 0.65rem;
+          padding: 0.25rem 0.5rem;
+        }
+
+        .menu-details {
+          padding: 1rem;
+        }
+
+        .menu-details h3 {
+          font-size: 0.9rem;
+        }
+
+        .menu-details > p {
+          font-size: 0.8rem;
+          line-height: 1.4;
+        }
+
+        .menu-details .ingredients {
+          padding: 0.5rem;
+          font-size: 0.7rem;
+          margin-bottom: 0.5rem;
+        }
+
+        .menu-details .ingredients.show {
+          padding: 0.5rem;
+          margin-bottom: 0.5rem;
+          max-height: 150px;
+        }
+
+        .menu-details .ingredients strong {
+          font-size: 0.65rem;
+          margin-bottom: 0.2rem;
+        }
+
+        .menu-footer {
+          gap: 0.4rem;
+          padding-top: 0.6rem;
+        }
+
+        .menu-price {
+          font-size: 0.95rem;
+        }
+
+        .btn-order {
+          padding: 0.4rem 0.7rem;
+          font-size: 0.7rem;
+        }
+
+        .modal-content {
+          padding: 0.9rem;
+          margin: 0.2rem;
+        }
+
+        .modal-header {
+          margin-bottom: 0.8rem;
+        }
+
+        .form-group input,
+        .form-group textarea {
+          padding: 0.6rem;
+          font-size: 0.8rem;
+        }
+
+        .form-group label {
+          font-size: 0.75rem;
+          margin-bottom: 0.3rem;
+        }
+
+        .form-actions button {
+          padding: 0.6rem;
+          font-size: 0.75rem;
+        }
+      }
+
+      body.dark-mode {
+        --surface: #241d19;
+        --border: #4c3d34;
+        --text: #fff7ed;
+        --muted: #d2c2b6;
+        --primary: #ff704f;
+        --primary-dark: #c7472f;
+        color: var(--text);
+        background: #171311;
+      }
+
+      body.dark-mode .menu-view-header {
+        background: linear-gradient(120deg, rgba(199, 71, 47, 0.2), rgba(36, 29, 25, 0.96));
+        border-bottom-color: var(--border);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.28);
+      }
+
+      body.dark-mode .back-link,
+      body.dark-mode .menu-view-header h1,
+      body.dark-mode .menu-view-header .lead,
+      body.dark-mode .menu-details h3,
+      body.dark-mode .menu-details > p,
+      body.dark-mode .summary-label,
+      body.dark-mode .form-group label,
+      body.dark-mode .account-info p,
+      body.dark-mode .order-pending p {
+        color: var(--text);
+      }
+
+      body.dark-mode .detailed-menu-card,
+      body.dark-mode .modal-content,
+      body.dark-mode .form-actions,
+      body.dark-mode .modal-header {
+        background: var(--surface);
+        border-color: var(--border);
+      }
+
+      body.dark-mode .ingredients,
+      body.dark-mode .account-info,
+      body.dark-mode .order-id {
+        background: #30251f;
+        border-color: var(--border);
+        color: var(--muted);
+      }
+
+      body.dark-mode .form-group input,
+      body.dark-mode .form-group textarea {
+        background: #30251f;
+        border-color: var(--border);
+        color: var(--text);
+      }
+
+      body.dark-mode .form-group input::placeholder,
+      body.dark-mode .form-group textarea::placeholder,
+      body.dark-mode .account-label,
+      body.dark-mode .close-btn {
+        color: var(--muted);
+      }
+
+      body.dark-mode [style*="#fff3cd"] {
+        background: #493b1e !important;
+      }
+
+      body.dark-mode [style*="#856404"] {
+        color: #ffe39a !important;
+      }
+
+      body.dark-mode [style*="#e3f2fd"] {
+        background: #193448 !important;
+      }
+
+      body.dark-mode [style*="#1565c0"] {
+        color: #9ed7ff !important;
+      }
+
+      body.dark-mode .payment-transfer-notice {
+        background: #493b1e;
+        border-left-color: #ffc107;
+      }
+
+      body.dark-mode .payment-transfer-notice p {
+        color: #ffe39a;
+      }
+
+      body.dark-mode .confirmation-notice {
+        background: #193448;
+        border-left-color: #2196f3;
+      }
+
+      body.dark-mode .confirmation-notice p {
+        color: #9ed7ff;
+      }
+
+      @media (max-width: 720px) {
+        .menu-view-header {
+          padding: 2.5rem 1rem 2rem;
+        }
+
+        .menu-view-header .section-heading h1 {
+          font-size: clamp(1.9rem, 9vw, 2.6rem) !important;
+          line-height: 1.05;
+        }
+
+        .menu-view-header .section-heading .lead {
+          margin-top: 0.8rem !important;
+          font-size: 0.92rem;
+          line-height: 1.55;
+        }
+
+        .back-link {
+          margin-bottom: 1rem;
+          padding: 0.55rem 0.8rem;
+        }
+
+        .full-menu-grid {
+          grid-template-columns: 1fr;
+          gap: 1rem;
+          padding: 1.5rem 1rem 2.5rem;
+        }
+
+        .detailed-menu-card {
+          border-width: 1px;
+          border-radius: 14px;
+        }
+
+        .menu-image {
+          height: 210px;
+        }
+
+        .menu-details {
+          padding: 1.1rem;
+        }
+
+        .menu-details h3 {
+          margin-bottom: 0.45rem;
+          font-size: 1.15rem;
+        }
+
+        .menu-details > p {
+          min-height: 0;
+          margin-bottom: 0.85rem;
+          font-size: 0.9rem;
+          line-height: 1.55;
+        }
+
+        .menu-details .ingredients {
+          margin-bottom: 0.9rem;
+          padding: 0.75rem;
+          font-size: 0.8rem;
+          line-height: 1.45;
+        }
+
+        .menu-footer {
+          align-items: center;
+          gap: 0.8rem;
+        }
+
+        .menu-price {
+          font-size: 1.15rem;
+        }
+
+        .btn-order {
+          min-height: 2.4rem;
+          padding: 0.55rem 1rem;
+          font-size: 0.82rem;
+        }
+
+        .modal {
+          padding: 0.75rem;
+        }
+
+        .modal-content {
+          width: 100%;
+          max-height: calc(100vh - 1.5rem);
+          margin: 0;
+          padding: 1rem;
+          border-radius: 14px;
+        }
+
+        .form-actions {
+          position: static;
+        }
+      }
+
+      @media (max-width: 380px) {
+        .menu-view-header {
+          padding-right: 0.75rem;
+          padding-left: 0.75rem;
+        }
+
+        .full-menu-grid {
+          padding-right: 0.75rem;
+          padding-left: 0.75rem;
+        }
+
+        .menu-image {
+          height: 185px;
+        }
+      }
+    </style>
+    <div class="menu-view-header">
+      <a href="index.html#menu" class="back-link">← Back to Home</a>
+      <div class="section-heading menu-view-heading">
+        <p class="eyebrow">Our Complete Menu</p>
+        <h1 class="menu-view-title">All Our Delicious Dishes</h1>
+        <p class="lead menu-view-lead">Explore our full selection of authentic African cuisine prepared fresh daily.</p>
+      </div>
+    </div>
+
+    <div class="full-menu-grid" id="fullMenuGrid">
+      <!-- Products will be rendered here from /api/products -->
+    </div>
+
+    <main>
+      <div class="full-menu-grid" id="staticMenuGrid">
+        <!-- Jollof Rice -->
+        <div class="detailed-menu-card">
+          <div class="menu-image"><img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=500&h=300&fit=crop" alt="Jollof Rice"></div>
+          <div class="menu-details">
+            <h3>Jollof Rice</h3>
+            <p>Golden, aromatic rice cooked to perfection with rich tomato and spice flavors. A classic favorite that's loved by all.</p>
+            <div class="ingredients">
+              <strong>Ingredients:</strong>
+              Long grain rice, tomatoes, peppers, onions, spices, and vegetables
+            </div>
+            <div class="menu-footer">
+              <span class="menu-price">$12</span>
+              <button class="btn-order" data-food="Jollof Rice" data-price="12">Order</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- White Rice -->
+        <div class="detailed-menu-card">
+          <div class="menu-image"><img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=500&h=300&fit=crop" alt="White Rice"></div>
+          <div class="menu-details">
+            <h3>White Rice</h3>
+            <p>Fluffy, perfectly seasoned white rice - a perfect side for any meal. Light and delicious every time.</p>
+            <div class="ingredients">
+              <strong>Ingredients:</strong>
+              Premium long grain rice, butter, salt, and light seasoning
+            </div>
+            <div class="menu-footer">
+              <span class="menu-price">$8</span>
+              <button class="btn-order" data-food="White Rice" data-price="8">Order</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Amola (Pounded Yam) -->
+        <div class="detailed-menu-card">
+          <div class="menu-image"><img src="https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?w=500&h=300&fit=crop" alt="Amola"></div>
+          <div class="menu-details">
+            <h3>Amola</h3>
+            <p>Delicious pounded yam served with savory sauce and protein. A traditional favorite with authentic flavors.</p>
+            <div class="ingredients">
+              <strong>Ingredients:</strong>
+              Fresh yam, butter, salt, and served with choice of sauce
+            </div>
+            <div class="menu-footer">
+              <span class="menu-price">$10</span>
+              <button class="btn-order" data-food="Amola" data-price="10">Order</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Fried Chicken -->
+        <div class="detailed-menu-card">
+          <div class="menu-image"><img src="https://images.unsplash.com/photo-1598103442097-8b74394b95c6?w=500&h=300&fit=crop" alt="Fried Chicken"></div>
+          <div class="menu-details">
+            <h3>Fried Chicken</h3>
+            <p>Crispy, golden fried chicken seasoned with our special blend of spices. Tender on the inside, crunchy on the outside.</p>
+            <div class="ingredients">
+              <strong>Ingredients:</strong>
+              Premium chicken pieces, secret spice blend, fried to perfection
+            </div>
+            <div class="menu-footer">
+              <span class="menu-price">$14</span>
+              <button class="btn-order" data-food="Fried Chicken" data-price="14">Order</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Vegetable Soup -->
+        <div class="detailed-menu-card">
+          <div class="menu-image"><img src="https://images.unsplash.com/photo-1547592166-23ac45744acd?w=500&h=300&fit=crop" alt="Vegetable Soup"></div>
+          <div class="menu-details">
+            <h3>Vegetable Soup</h3>
+            <p>Hearty, nutritious soup loaded with fresh vegetables and herbs. A wholesome choice for health-conscious diners.</p>
+            <div class="ingredients">
+              <strong>Ingredients:</strong>
+              Mixed fresh vegetables, herbs, vegetable broth, and spices
+            </div>
+            <div class="menu-footer">
+              <span class="menu-price">$9</span>
+              <button class="btn-order" data-food="Vegetable Soup" data-price="9">Order</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Pepper Soup -->
+        <div class="detailed-menu-card">
+          <div class="menu-image"><img src="https://images.unsplash.com/photo-1600271886742-f049cd451bba?w=500&h=300&fit=crop" alt="Pepper Soup"></div>
+          <div class="menu-details">
+            <h3>Pepper Soup</h3>
+            <p>Warming spicy pepper soup with meat and aromatic seasonings. Perfect for a cold day or when you want something spicy.</p>
+            <div class="ingredients">
+              <strong>Ingredients:</strong>
+              Meat, fresh peppers, ginger, garlic, and traditional spices
+            </div>
+            <div class="menu-footer">
+              <span class="menu-price">$11</span>
+              <button class="btn-order" data-food="Pepper Soup" data-price="11">Order</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Grilled Beef -->
+        <div class="detailed-menu-card">
+          <div class="menu-image"><img src="https://images.unsplash.com/photo-1555939594-58d7cb561bf1?w=500&h=300&fit=crop" alt="Grilled Beef"></div>
+          <div class="menu-details">
+            <h3>Grilled Beef</h3>
+            <p>Tender, perfectly grilled beef seasoned and served with vegetables. A premium choice for meat lovers.</p>
+            <div class="ingredients">
+              <strong>Ingredients:</strong>
+              Premium beef cuts, grilled spices, fresh vegetables, herbs
+            </div>
+            <div class="menu-footer">
+              <span class="menu-price">$16</span>
+              <button class="btn-order" data-food="Grilled Beef" data-price="16">Order</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Rice & Stew -->
+        <div class="detailed-menu-card">
+          <div class="menu-image"><img src="https://images.unsplash.com/photo-1584618604070-ba3c7055202d?w=500&h=300&fit=crop" alt="Rice & Stew"></div>
+          <div class="menu-details">
+            <h3>Rice & Stew</h3>
+            <p>Classic rice with rich, flavorful stew made with quality ingredients. A complete meal in one bowl.</p>
+            <div class="ingredients">
+              <strong>Ingredients:</strong>
+              Rice, meat, tomatoes, peppers, onions, and aromatic spices
+            </div>
+            <div class="menu-footer">
+              <span class="menu-price">$13</span>
+              <button class="btn-order" data-food="Rice & Stew" data-price="13">Order</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Plantain Chips -->
+        <div class="detailed-menu-card">
+          <div class="menu-image"><img src="https://images.unsplash.com/photo-1599599810694-b5ac4dd77c67?w=500&h=300&fit=crop" alt="Plantain Chips"></div>
+          <div class="menu-details">
+            <h3>Plantain Chips</h3>
+            <p>Crispy, golden plantain chips with a hint of salt. A delicious side or snack.</p>
+            <div class="ingredients">
+              <strong>Ingredients:</strong>
+              Fresh plantains, vegetable oil, sea salt
+            </div>
+            <div class="menu-footer">
+              <span class="menu-price">$6</span>
+              <button class="btn-order" data-food="Plantain Chips" data-price="6">Order</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Jollof Rice & Chicken -->
+        <div class="detailed-menu-card">
+          <div class="menu-image"><img src="https://images.unsplash.com/photo-1635222589759-215716cd4628?w=500&h=300&fit=crop" alt="Jollof Rice & Chicken"></div>
+          <div class="menu-details">
+            <h3>Jollof Rice & Chicken</h3>
+            <p>Our signature jollof rice paired with seasoned fried chicken. The perfect combination meal.</p>
+            <div class="ingredients">
+              <strong>Ingredients:</strong>
+              Jollof rice, crispy chicken, vegetables, traditional spices
+            </div>
+            <div class="menu-footer">
+              <span class="menu-price">$18</span>
+              <button class="btn-order" data-food="Jollof Rice & Chicken" data-price="18">Order</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Meat Pie -->
+        <div class="detailed-menu-card">
+          <div class="menu-image"><img src="https://images.unsplash.com/photo-1607623814075-e51df1bdc82f?w=500&h=300&fit=crop" alt="Meat Pie"></div>
+          <div class="menu-details">
+            <h3>Meat Pie</h3>
+            <p>Flaky pastry filled with seasoned ground meat and vegetables. A savory treat perfect for any time.</p>
+            <div class="ingredients">
+              <strong>Ingredients:</strong>
+              Pastry, ground meat, onions, peppers, spices, and herbs
+            </div>
+            <div class="menu-footer">
+              <span class="menu-price">$7</span>
+              <button class="btn-order" data-food="Meat Pie" data-price="7">Order</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Coleslaw -->
+        <div class="detailed-menu-card">
+          <div class="menu-image"><img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=500&h=300&fit=crop" alt="Coleslaw"></div>
+          <div class="menu-details">
+            <h3>Coleslaw</h3>
+            <p>Fresh, crunchy coleslaw with a light dressing. A refreshing side that complements any main dish.</p>
+            <div class="ingredients">
+              <strong>Ingredients:</strong>
+              Cabbage, carrots, light mayo dressing, and fresh herbs
+            </div>
+            <div class="menu-footer">
+              <span class="menu-price">$5</span>
+              <button class="btn-order" data-food="Coleslaw" data-price="5">Order</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <footer>
+      <p>© <span id="year"></span> Fresh Food Delivery. Crafted for flavor and comfort.</p>
+    </footer>
+
+    <!-- Order Modal -->
+    <div id="orderModal" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>Order <span id="modalFoodName"></span></h2>
+          <button class="close-btn" onclick="closeOrderModal()">&times;</button>
+        </div>
+        <form id="orderForm" onsubmit="submitOrder(event)">
+          <div class="form-group">
+            <label for="customerName">Your Name *</label>
+            <input type="text" id="customerName" name="customerName" required>
+          </div>
+          <div class="form-group">
+            <label for="customerEmail">Email Address *</label>
+            <input type="email" id="customerEmail" name="customerEmail" required>
+          </div>
+          <div class="form-group">
+            <label for="customerPhone">Phone Number *</label>
+            <input type="tel" id="customerPhone" name="customerPhone" required>
+          </div>
+          <div class="form-group">
+            <label for="customerAddress">Delivery Address *</label>
+            <textarea id="customerAddress" name="customerAddress" placeholder="Where should we deliver your order?" required></textarea>
+          </div>
+          <div class="form-group">
+            <label for="quantity">Quantity *</label>
+            <input type="number" id="quantity" name="quantity" value="1" min="1" max="50" required>
+          </div>
+          <div class="form-group">
+            <label for="specialInstructions">Special Instructions (Optional)</label>
+            <textarea id="specialInstructions" name="specialInstructions" placeholder="E.g., No spice, extra sauce, allergies, etc."></textarea>
+          </div>
+          <div class="order-summary">
+            <div class="summary-row">
+              <span class="summary-label">Food Item:</span>
+              <span class="summary-value" id="modalFoodPrice"></span>
+            </div>
+            <div class="summary-row total-row">
+              <span class="summary-label summary-total-label">Total Amount:</span>
+              <span class="summary-value" id="totalPrice"></span>
+            </div>
+          </div>
+          <div class="form-actions">
+            <button type="submit" class="btn-submit">🛒 Place Order</button>
+            <button type="button" class="btn-cancel" onclick="closeOrderModal()">Cancel</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Payment Modal -->
+    <div id="paymentModal" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>💳 Payment Details</h2>
+          <button class="close-btn" onclick="closePaymentModal()">&times;</button>
+        </div>
+
+        <div class="payment-card">
+          <h3>Total Amount Due</h3>
+          <div class="payment-details">
+            <div class="payment-detail-row">
+              <span class="payment-label">Item:</span>
+              <span class="payment-value" id="paymentFoodName"></span>
+            </div>
+            <div class="payment-detail-row">
+              <span class="payment-label">Quantity:</span>
+              <span class="payment-value" id="paymentQuantity"></span>
+            </div>
+            <div class="payment-detail-row payment-total-row">
+              <span class="payment-label payment-total-label">TOTAL:</span>
+              <span class="payment-value payment-total-value" id="paymentTotal"></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="payment-info">
+          <h4>📌 TRANSFER TO THIS ACCOUNT</h4>
+          <div class="account-info">
+            <p>
+              <span class="account-label">Account Name:</span><br>
+              <span class="account-value">Fresh Food Delivery</span>
+            </p>
+          </div>
+          <div class="account-info">
+            <p>
+              <span class="account-label">Bank Name:</span><br>
+              <span class="account-value">First National Bank</span>
+            </p>
+          </div>
+          <div class="account-info">
+            <p>
+              <span class="account-label">Account Number:</span><br>
+              <span class="account-value">1234567890</span>
+            </p>
+          </div>
+          <div class="account-info">
+            <p>
+              <span class="account-label">Sort Code:</span><br>
+              <span class="account-value">123-456</span>
+            </p>
+          </div>
+        </div>
+
+        <div class="payment-transfer-notice">
+          <p>✓ Please transfer the exact amount shown above.</p>
+        </div>
+
+        <div class="form-actions">
+          <button type="button" class="btn-submit" onclick="confirmPayment()">✓ I've Paid</button>
+          <button type="button" class="btn-cancel" onclick="closePaymentModal()">Cancel</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Order Confirmation Modal -->
+    <div id="confirmationModal" class="modal">
+      <div class="modal-content confirmation-modal">
+        <div class="modal-header">
+          <h2>Order Confirmation</h2>
+          <button class="close-btn" onclick="closeConfirmationModal()">&times;</button>
+        </div>
+
+        <div class="order-pending">
+          <div class="confirmation-icon">📦</div>
+          <h3>Order Received!</h3>
+          <p>Your order has been received and is being processed.</p>
+          <p class="status-pending">Status: PENDING</p>
+          <div class="order-id">
+            Order ID: <span id="orderId"></span>
+          </div>
+        </div>
+
+        <div class="payment-info">
+          <h4>📋 ORDER DETAILS</h4>
+          <p class="confirmation-detail"><strong>Item:</strong> <span id="confFoodName"></span></p>
+          <p class="confirmation-detail"><strong>Quantity:</strong> <span id="confQuantity"></span></p>
+          <p class="confirmation-detail"><strong>Total Amount:</strong> <span id="confTotal" class="confirmation-total"></span></p>
+        </div>
+
+        <div class="payment-info">
+          <h4>👤 CUSTOMER DETAILS</h4>
+          <p class="confirmation-detail"><strong>Name:</strong> <span id="confName"></span></p>
+          <p class="confirmation-detail"><strong>Email:</strong> <span id="confEmail"></span></p>
+          <p class="confirmation-detail"><strong>Phone:</strong> <span id="confPhone"></span></p>
+        </div>
+
+        <div class="confirmation-notice">
+          <p>We will contact you soon to confirm your order delivery time.</p>
+        </div>
+
+        <div class="form-actions">
+          <button type="button" class="btn-submit" onclick="closeConfirmationModal(); closeOrderModal();">✓ Done</button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      if (localStorage.getItem('amooTheme') === 'dark') {
+        document.body.classList.add('dark-mode');
+      }
+
+      document.getElementById('year').textContent = new Date().getFullYear();
+
+      // Toggle ingredients visibility on image click
+      document.querySelectorAll('.menu-image').forEach(image => {
+        image.addEventListener('click', function(e) {
+          e.preventDefault();
+          const card = this.closest('.detailed-menu-card');
+          const ingredients = card.querySelector('.ingredients');
+          if (ingredients) {
+            ingredients.classList.toggle('show');
+          }
+        });
+      });
+
+      // Store food price
+      let currentFoodPrice = 0;
+      let currentFoodImage = '';
+
+      // Open order modal
+      function openOrderModal(foodName, foodPrice, foodImage) {
+        currentFoodPrice = parseFloat(foodPrice);
+        currentFoodImage = foodImage || '';
+        document.getElementById('modalFoodName').textContent = foodName;
+        document.getElementById('modalFoodPrice').textContent = `${foodName} - $${foodPrice}`;
+        document.getElementById('orderModal').classList.add('show');
+        document.getElementById('quantity').value = 1;
+        updateTotalPrice();
+        document.getElementById('customerName').focus();
+      }
+
+      // Close order modal
+      function closeOrderModal() {
+        document.getElementById('orderModal').classList.remove('show');
+        document.getElementById('orderForm').reset();
+      }
+
+      // Update total price based on quantity
+      function updateTotalPrice() {
+        const quantity = parseInt(document.getElementById('quantity').value) || 1;
+        const total = (currentFoodPrice * quantity).toFixed(2);
+        document.getElementById('totalPrice').textContent = `$${total}`;
+      }
+
+      // Quantity change listener
+      document.getElementById('quantity').addEventListener('change', updateTotalPrice);
+      document.getElementById('quantity').addEventListener('input', updateTotalPrice);
+
+      // Submit order form
+      function submitOrder(event) {
+        event.preventDefault();
+        
+        const foodName = document.getElementById('modalFoodName').textContent;
+        const quantity = document.getElementById('quantity').value;
+        const total = document.getElementById('totalPrice').textContent;
+        const customerName = document.getElementById('customerName').value;
+        const customerEmail = document.getElementById('customerEmail').value;
+        const customerPhone = document.getElementById('customerPhone').value;
+        const customerAddress = document.getElementById('customerAddress').value;
+        const specialInstructions = document.getElementById('specialInstructions').value;
+
+        // Store order data for payment
+        window.orderData = {
+          food: foodName,
+          image: currentFoodImage,
+          quantity: quantity,
+          total: total,
+          customer: {
+            name: customerName,
+            email: customerEmail,
+            phone: customerPhone,
+            address: customerAddress
+          },
+          specialInstructions: specialInstructions,
+          timestamp: new Date().toISOString()
+        };
+
+        // Show payment modal
+        showPaymentModal(foodName, quantity, total);
+        closeOrderModal();
+      }
+
+      // Show payment modal
+      function showPaymentModal(foodName, quantity, total) {
+        document.getElementById('paymentFoodName').textContent = foodName;
+        document.getElementById('paymentQuantity').textContent = quantity;
+        document.getElementById('paymentTotal').textContent = total;
+        document.getElementById('paymentModal').classList.add('show');
+      }
+
+      // Close payment modal
+      function closePaymentModal() {
+        document.getElementById('paymentModal').classList.remove('show');
+      }
+
+      // Confirm payment - show order confirmation
+      async function confirmPayment() {
+        const orderId = 'ORD-' + Date.now();
+        document.getElementById('orderId').textContent = orderId;
+
+        // Populate confirmation details
+        document.getElementById('confFoodName').textContent = window.orderData.food;
+        document.getElementById('confQuantity').textContent = window.orderData.quantity;
+        document.getElementById('confTotal').textContent = window.orderData.total;
+        document.getElementById('confName').textContent = window.orderData.customer.name;
+        document.getElementById('confEmail').textContent = window.orderData.customer.email;
+        document.getElementById('confPhone').textContent = window.orderData.customer.phone;
+
+        // Store final order data
+        window.orderData.orderId = orderId;
+        window.orderData.status = 'PENDING';
+
+        const orderRecord = {
+          orderId,
+          name: window.orderData.food,
+          image: window.orderData.image,
+          quantity: window.orderData.quantity,
+          total: window.orderData.total,
+          status: window.orderData.status,
+          email: window.orderData.customer.email,
+          customer: window.orderData.customer,
+          specialInstructions: window.orderData.specialInstructions
+        };
+        const inboxRecord = {
+          email: window.orderData.customer.email,
+          title: 'Order received',
+          message: `Your ${window.orderData.food} order is being processed.`,
+          orderId,
+          type: 'order'
+        };
+
+        try {
+          const response = await fetch('/api/checkout', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ order: orderRecord, message: inboxRecord })
+          });
+          const result = await response.json();
+          if (!response.ok) throw new Error(result.error || 'Unable to save order');
+        } catch (error) {
+          console.error('Unable to save order records:', error);
+          alert('Your payment was not recorded. Please try again.');
+          return;
+        }
+
+        const savedOrders = JSON.parse(localStorage.getItem('amooOrders') || '[]');
+        savedOrders.push(orderRecord);
+        localStorage.setItem('amooOrders', JSON.stringify(savedOrders));
+        const savedMessages = JSON.parse(localStorage.getItem('amooInbox') || '[]');
+        savedMessages.unshift(inboxRecord);
+        localStorage.setItem('amooInbox', JSON.stringify(savedMessages));
+
+        // Log to console (ready for backend integration)
+        console.log('Order Confirmed:', window.orderData);
+
+        // Close payment modal and show confirmation
+        closePaymentModal();
+        showConfirmationModal();
+      }
+
+      // Show confirmation modal
+      function showConfirmationModal() {
+        document.getElementById('confirmationModal').classList.add('show');
+      }
+
+      // Close confirmation modal
+      function closeConfirmationModal() {
+        document.getElementById('confirmationModal').classList.remove('show');
+      }
+
+      // Add click listeners to all order buttons
+      function attachOrderButtons() {
+        document.querySelectorAll('.btn-order').forEach(button => {
+          button.addEventListener('click', function(e) {
+            e.stopPropagation(); // Prevent triggering image click
+            const foodName = this.dataset.food;
+            const foodPrice = this.dataset.price;
+            const foodImage = this.closest('.detailed-menu-card')?.querySelector('img')?.src || '';
+            openOrderModal(foodName, foodPrice, foodImage);
+          });
+        });
+      }
+
+      // Load products from backend
+      async function loadProductsFromApi() {
+        try {
+          const res = await fetch('/api/products');
+          const products = await res.json();
+          const grid = document.getElementById('fullMenuGrid');
+          grid.innerHTML = '';
+          products.forEach(p => {
+            const card = document.createElement('div');
+            card.className = 'detailed-menu-card';
+            card.innerHTML = `
+              <div class="menu-image"><img src="${p.image}" alt="${p.name}"></div>
+              <div class="menu-details">
+                <h3>${p.name}</h3>
+                <p>${p.description}</p>
+                <div class="ingredients"><strong>Ingredients:</strong> ${p.ingredients.join(', ')}</div>
+                <div class="menu-footer">
+                  <span class="menu-price">$${p.price}</span>
+                  <button class="btn-order" data-food="${p.name}" data-price="${p.price}">Order</button>
+                </div>
+              </div>
+            `;
+            grid.appendChild(card);
+          });
+
+          // re-bind interactions
+          document.querySelectorAll('.menu-image').forEach(image => {
+            image.addEventListener('click', function(e) {
+              e.preventDefault();
+              const card = this.closest('.detailed-menu-card');
+              const ingredients = card.querySelector('.ingredients');
+              if (ingredients) ingredients.classList.toggle('show');
+            });
+          });
+
+          attachOrderButtons();
+        } catch (err) {
+          console.error('Failed to load products', err);
+        }
+      }
+
+      // Start: load products when DOM ready
+      document.addEventListener('DOMContentLoaded', loadProductsFromApi);
+
+      // Close modal when clicking outside of it
+      document.getElementById('orderModal').addEventListener('click', function(event) {
+        if (event.target === this) {
+          closeOrderModal();
+        }
+      });
+
+      document.getElementById('paymentModal').addEventListener('click', function(event) {
+        if (event.target === this) {
+          closePaymentModal();
+        }
+      });
+
+      document.getElementById('confirmationModal').addEventListener('click', function(event) {
+        if (event.target === this) {
+          closeConfirmationModal();
+        }
+      });
+
+      // Close modal with Escape key
+      document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape') {
+          closeOrderModal();
+          closePaymentModal();
+        }
+      });
+    </script>
+  </body>
+</html>
+                                                                                                                                                                                                                                                                                                                                                                                                                               

@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Amoo Rider Portal</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    :root { --rider-ink: #231914; --rider-muted: #756458; --rider-line: #eadfd6; --rider-accent: #c7472f; --rider-green: #2f8f62; }
+    body { min-height: 100vh; background: #f8f3ed; color: var(--rider-ink); }
+    .rider-shell { width: min(1180px, calc(100% - 2rem)); margin: 0 auto; padding: 2rem 0 4rem; }
+    .rider-header { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 2rem; }
+    .rider-brand { color: var(--rider-accent); font: 700 1.35rem Fraunces, Georgia, serif; text-decoration: none; }
+    .rider-header-actions { display: flex; align-items: center; gap: 0.75rem; }
+    .rider-name { color: var(--rider-muted); font-size: 0.85rem; font-weight: 700; }
+    .rider-button { padding: 0.7rem 1rem; border: 0; border-radius: 8px; background: var(--rider-accent); color: #fff; cursor: pointer; font: inherit; font-weight: 800; }
+    .rider-button.secondary { border: 1px solid var(--rider-line); background: #fff; color: var(--rider-ink); }
+    .rider-button:disabled { cursor: wait; opacity: 0.6; }
+    .rider-heading { margin-bottom: 1.5rem; }
+    .rider-heading h1 { margin-bottom: 0.35rem; font-size: clamp(2rem, 5vw, 3.5rem); }
+    .rider-heading p { color: var(--rider-muted); }
+    .rider-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 1rem; }
+    .rider-card { border: 1px solid var(--rider-line); border-radius: 14px; background: #fff; box-shadow: 0 10px 30px rgba(61, 39, 25, 0.06); }
+    .rider-stat { padding: 1.2rem; }
+    .rider-stat span { color: var(--rider-muted); font-size: 0.78rem; font-weight: 700; }
+    .rider-stat strong { display: block; margin-top: 0.35rem; font-size: 1.65rem; }
+    .rider-layout { display: grid; grid-template-columns: 1.25fr 0.75fr; gap: 1rem; }
+    .rider-panel { padding: 1.25rem; }
+    .rider-panel h2 { margin-bottom: 1rem; font-size: 1.1rem; }
+    .availability { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 1rem; margin-bottom: 1rem; border-radius: 10px; background: #f8f3ed; }
+    .availability strong { display: block; }
+    .availability span { color: var(--rider-muted); font-size: 0.8rem; }
+    .toggle { position: relative; width: 3.2rem; height: 1.8rem; border: 0; border-radius: 999px; background: #b9aaa0; cursor: pointer; }
+    .toggle::after { position: absolute; top: 0.25rem; left: 0.25rem; width: 1.3rem; height: 1.3rem; border-radius: 50%; background: #fff; content: ''; transition: transform 0.2s ease; }
+    .toggle.online { background: var(--rider-green); }
+    .toggle.online::after { transform: translateX(1.4rem); }
+    .delivery-list { display: grid; gap: 0.75rem; }
+    .delivery { display: grid; grid-template-columns: 3.2rem 1fr auto; gap: 0.75rem; align-items: center; padding: 0.8rem; border: 1px solid var(--rider-line); border-radius: 9px; }
+    .delivery img { width: 3.2rem; height: 3.2rem; border-radius: 7px; object-fit: cover; }
+    .delivery strong, .delivery span { display: block; }
+    .delivery span { margin-top: 0.25rem; color: var(--rider-muted); font-size: 0.76rem; }
+    .delivery-status { color: var(--rider-accent) !important; font-weight: 800; text-transform: uppercase; }
+    .delivery-code-form { display: flex; flex-wrap: wrap; gap: 0.45rem; margin-top: 0.5rem; }
+    .delivery-code-form input { width: 8rem; min-height: 2.35rem; box-sizing: border-box; padding: 0.55rem; border: 1px solid var(--rider-line); border-radius: 7px; background: #fff; color: var(--rider-ink); font: inherit; font-size: 0.8rem; }
+    .delivery-code-form input:focus { outline: 2px solid rgba(199, 71, 47, 0.2); border-color: var(--rider-accent); }
+    .earnings-row { display: flex; justify-content: space-between; gap: 1rem; padding: 0.7rem 0; border-bottom: 1px solid var(--rider-line); }
+    .earnings-row span { color: var(--rider-muted); }
+    .payout-account { display: grid; gap: 0.2rem; margin-top: 1rem; padding: 0.75rem; border-radius: 8px; background: #f8f3ed; font-size: 0.8rem; }
+    .payout-account span { color: var(--rider-muted); }
+    .withdraw-available { display: flex; justify-content: space-between; gap: 1rem; padding: 0.7rem 0; color: var(--rider-muted); font-size: 0.82rem; }
+    .withdraw-available strong { color: var(--rider-green); }
+    .withdraw-form, .chat-form { display: grid; gap: 0.65rem; margin-top: 1rem; }
+    .withdraw-form input, .withdraw-form select, .chat-form textarea, .auth-form input { width: 100%; padding: 0.75rem; border: 1px solid var(--rider-line); border-radius: 8px; background: #fff; color: var(--rider-ink); font: inherit; }
+    .chat-list { display: grid; gap: 0.6rem; max-height: 18rem; overflow-y: auto; }
+    .chat-message { padding: 0.7rem; border-radius: 8px; background: #f8f3ed; }
+    .chat-message.admin { background: #fbe7df; }
+    .chat-message strong, .chat-message span { display: block; }
+    .chat-message span { margin-top: 0.25rem; color: var(--rider-muted); font-size: 0.78rem; }
+    .empty { padding: 1rem 0; color: var(--rider-muted); }
+    .auth-screen { display: grid; min-height: 100vh; place-items: center; padding: 1rem; background: linear-gradient(135deg, #fffaf5, #f4d5bb); }
+    .auth-screen[hidden], .rider-shell[hidden] { display: none; }
+    .auth-card { width: min(460px, 100%); padding: 2rem; border-radius: 16px; background: #fff; box-shadow: 0 20px 60px rgba(61, 39, 25, 0.14); }
+    .auth-card h1 { margin-bottom: 0.4rem; }
+    .auth-card p { margin-bottom: 1.3rem; color: var(--rider-muted); }
+    .auth-form { display: grid; gap: 0.75rem; }
+    .auth-form button { margin-top: 0.35rem; }
+    .auth-switch { margin-top: 1rem !important; color: var(--rider-muted); font-size: 0.85rem; text-align: center; }
+    .auth-switch button { border: 0; background: transparent; color: var(--rider-accent); cursor: pointer; font: inherit; font-weight: 800; }
+    .message { min-height: 1.2rem; color: var(--rider-accent); font-size: 0.82rem; }
+    @media (max-width: 800px) { .rider-stats { grid-template-columns: repeat(2, 1fr); } .rider-layout { grid-template-columns: 1fr; } }
+    @media (max-width: 480px) { .rider-shell { width: min(100% - 1rem, 1180px); padding-top: 1rem; } .rider-header { align-items: flex-start; } .rider-header-actions { flex-direction: column; align-items: flex-end; } .rider-stats { gap: 0.6rem; } .rider-stat { padding: 0.8rem; } .rider-stat strong { font-size: 1.25rem; } }
+  </style>
+</head>
+<body>
+  <div id="authScreen" class="auth-screen">
+    <section class="auth-card">
+      <a class="rider-brand" href="index.html">Amoo Rider</a>
+      <h1 id="authTitle">Rider login</h1>
+      <p id="authLead">Sign in to manage your deliveries and earnings.</p>
+      <form id="authForm" class="auth-form">
+        <input id="authName" placeholder="Full name" autocomplete="name" hidden>
+        <input id="authPhone" placeholder="Phone number" autocomplete="tel" hidden>
+        <input id="authNin" placeholder="NIN" autocomplete="off" hidden>
+        <input id="authGuarantorName" placeholder="Guarantor full name" autocomplete="name" hidden>
+        <input id="authGuarantorPhone" placeholder="Guarantor phone number" autocomplete="tel" hidden>
+        <input id="authBankName" placeholder="Bank name" autocomplete="organization" hidden>
+        <input id="authAccountName" placeholder="Account name" autocomplete="name" hidden>
+        <input id="authAccountNumber" placeholder="Account number" inputmode="numeric" autocomplete="off" hidden>
+        <input id="authEmail" type="email" placeholder="Email address" autocomplete="email" required>
+        <input id="authPassword" type="password" placeholder="Password" autocomplete="current-password" required>
+        <button class="rider-button" type="submit">Continue</button>
+        <div id="authMessage" class="message" aria-live="polite"></div>
+      </form>
+      <p class="auth-switch"><span id="authSwitchText">New rider?</span> <button id="authSwitch" type="button">Register here</button></p>
+    </section>
+  </div>
+
+  <main id="riderApp" class="rider-shell" hidden>
+    <header class="rider-header">
+      <a class="rider-brand" href="rider.html">Amoo Rider</a>
+      <div class="rider-header-actions"><span id="riderName" class="rider-name"></span><button id="logoutButton" class="rider-button secondary" type="button">Log out</button></div>
+    </header>
+    <section class="rider-heading"><h1>Your delivery desk</h1><p>Manage assigned orders, availability, messages, and payouts.</p></section>
+    <section class="rider-stats"><div class="rider-card rider-stat"><span>Available balance</span><strong id="availableAmount">₦0</strong></div><div class="rider-card rider-stat"><span>Total earned</span><strong id="earnedAmount">₦0</strong></div><div class="rider-card rider-stat"><span>Delivered</span><strong id="deliveredCount">0</strong></div><div class="rider-card rider-stat"><span>Availability</span><strong id="availabilityLabel">Offline</strong></div></section>
+    <section class="rider-layout">
+      <div class="rider-card rider-panel">
+        <h2>Delivery queue</h2>
+        <div class="availability"><div><strong id="availabilityTitle">You are offline</strong><span>Admins can assign deliveries when you are online.</span></div><button id="availabilityToggle" class="toggle" type="button" aria-label="Toggle availability"></button></div>
+        <div id="deliveryList" class="delivery-list"></div>
+      </div>
+      <div class="rider-card rider-panel">
+        <h2>Earnings and withdrawals</h2>
+        <div class="earnings-row"><span>Per delivery</span><strong>₦1,500</strong></div><div class="earnings-row"><span>Withdrawn</span><strong id="withdrawnAmount">₦0</strong></div>
+        <div id="payoutAccount" class="payout-account"></div>
+        <form id="withdrawForm" class="withdraw-form"><label class="withdraw-available">Available to withdraw <strong id="withdrawAvailableAmount">₦0</strong></label><input id="withdrawAmount" type="number" min="1500" step="500" placeholder="Amount to withdraw" required><select id="withdrawSchedule"><option value="weekly">Weekly withdrawal</option><option value="monthly">Monthly withdrawal</option></select><button class="rider-button" type="submit">Request withdrawal</button><div id="withdrawMessage" class="message"></div></form>
+      </div>
+      <div class="rider-card rider-panel">
+        <h2>Chat with admin</h2>
+        <div id="chatList" class="chat-list"></div>
+        <form id="chatForm" class="chat-form"><textarea id="chatInput" rows="3" placeholder="Write a message to admin" required></textarea><button class="rider-button" type="submit">Send message</button><div id="chatMessage" class="message"></div></form>
+      </div>
+    </section>
+  </main>
+  <script>
+    let registerMode = false;
+    let rider = null;
+    try { rider = JSON.parse(localStorage.getItem('amooRider') || 'null'); } catch (error) { localStorage.removeItem('amooRider'); }
+    const authScreen = document.getElementById('authScreen');
+    const riderApp = document.getElementById('riderApp');
+    const authForm = document.getElementById('authForm');
+    const formatMoney = value => `₦${Number(value || 0).toLocaleString()}`;
+    const escapeHtml = value => String(value ?? '').replace(/[&<>"']/g, character => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[character]));
+
+    function renderAuth() {
+      document.getElementById('authTitle').textContent = registerMode ? 'Rider registration' : 'Rider login';
+      document.getElementById('authLead').textContent = registerMode ? 'Create your rider account to receive deliveries.' : 'Sign in to manage your deliveries and earnings.';
+      document.getElementById('authName').hidden = !registerMode;
+      document.getElementById('authPhone').hidden = !registerMode;
+      document.getElementById('authNin').hidden = !registerMode;
+      document.getElementById('authGuarantorName').hidden = !registerMode;
+      document.getElementById('authGuarantorPhone').hidden = !registerMode;
+      document.getElementById('authBankName').hidden = !registerMode;
+      document.getElementById('authAccountName').hidden = !registerMode;
+      document.getElementById('authAccountNumber').hidden = !registerMode;
+      document.getElementById('authName').required = registerMode;
+      document.getElementById('authPhone').required = registerMode;
+      document.getElementById('authNin').required = registerMode;
+      document.getElementById('authGuarantorName').required = registerMode;
+      document.getElementById('authGuarantorPhone').required = registerMode;
+      document.getElementById('authBankName').required = registerMode;
+      document.getElementById('authAccountName').required = registerMode;
+      document.getElementById('authAccountNumber').required = registerMode;
+      document.getElementById('authPassword').autocomplete = registerMode ? 'new-password' : 'current-password';
+      document.getElementById('authSwitchText').textContent = registerMode ? 'Already registered?' : 'New rider?';
+      document.getElementById('authSwitch').textContent = registerMode ? 'Log in here' : 'Register here';
+    }
+    document.getElementById('authSwitch').addEventListener('click', () => { registerMode = !registerMode; renderAuth(); });
+    authForm.addEventListener('submit', async event => {
+      event.preventDefault();
+      const message = document.getElementById('authMessage');
+      const submitButton = authForm.querySelector('button[type="submit"]');
+      const payload = { name: document.getElementById('authName').value, phone: document.getElementById('authPhone').value, nin: document.getElementById('authNin').value, guarantorName: document.getElementById('authGuarantorName').value, guarantorPhone: document.getElementById('authGuarantorPhone').value, bankName: document.getElementById('authBankName').value, accountName: document.getElementById('authAccountName').value, accountNumber: document.getElementById('authAccountNumber').value, email: document.getElementById('authEmail').value, password: document.getElementById('authPassword').value };
+      message.textContent = registerMode ? 'Creating rider account...' : 'Signing in...';
+      submitButton.disabled = true;
+      try {
+        const response = await fetch(registerMode ? '/api/riders/register' : '/api/riders/login', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+        const result = await response.json();
+        if (!response.ok) {
+          if (registerMode && response.status === 409) {
+            registerMode = false;
+            document.getElementById('authEmail').value = payload.email;
+            document.getElementById('authPassword').value = '';
+            renderAuth();
+            message.textContent = 'This rider is already registered. Enter the password to log in.';
+          } else {
+            throw new Error(result.error || 'Unable to continue');
+          }
+          return;
+        }
+        rider = result.rider;
+        localStorage.setItem('amooRider', JSON.stringify(rider));
+        showApp();
+      } catch (error) { message.textContent = error.message || 'Unable to connect to the server.'; } finally { submitButton.disabled = false; }
+    });
+    function showApp() { authScreen.hidden = true; riderApp.hidden = false; document.getElementById('riderName').textContent = rider.name; renderPayoutAccount(); loadData(); }
+    function renderPayoutAccount() { const account = document.getElementById('payoutAccount'); const hasPayoutAccount = Boolean(rider.accountNumber); account.innerHTML = hasPayoutAccount ? `<strong>Payment account</strong><span>${escapeHtml(rider.bankName || 'Bank')} · ${escapeHtml(rider.accountName || rider.name)} · ${escapeHtml(rider.accountNumber)}</span>` : '<span>Complete bank details during registration before requesting a withdrawal.</span>'; document.getElementById('withdrawForm').querySelector('button[type="submit"]').disabled = !hasPayoutAccount; }
+    document.getElementById('logoutButton').addEventListener('click', () => { localStorage.removeItem('amooRider'); rider = null; riderApp.hidden = true; authScreen.hidden = false; });
+    document.getElementById('availabilityToggle').addEventListener('click', async () => {
+      const status = rider.status === 'online' ? 'offline' : 'online';
+      const response = await fetch(`/api/riders/${encodeURIComponent(rider.id)}/status`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ status }) });
+      const result = await response.json();
+      if (response.ok) { rider = result.rider; localStorage.setItem('amooRider', JSON.stringify(rider)); renderAvailability(); }
+    });
+    function renderAvailability() { const online = rider.status === 'online'; document.getElementById('availabilityToggle').classList.toggle('online', online); document.getElementById('availabilityTitle').textContent = online ? 'You are online' : 'You are offline'; document.getElementById('availabilityLabel').textContent = online ? 'Online' : 'Offline'; }
+    async function loadData() { renderAvailability(); try { const responses = await Promise.all([fetch(`/api/rider/orders?riderId=${encodeURIComponent(rider.id)}`), fetch(`/api/rider/earnings?riderId=${encodeURIComponent(rider.id)}`), fetch(`/api/rider/messages?riderId=${encodeURIComponent(rider.id)}`)]); if (responses.some(response => !response.ok)) throw new Error('Unable to load rider data'); const [orders, earnings, messages] = await Promise.all(responses.map(response => response.json())); renderOrders(orders); renderEarnings(earnings); renderMessages(messages); } catch (error) { document.getElementById('deliveryList').innerHTML = '<p class="empty">Unable to load rider data. Refresh the page.</p>'; document.getElementById('chatList').innerHTML = '<p class="empty">Unable to load messages.</p>'; } }
+    const deliveryCodeRequests = new Set();
+    function renderOrders(orders) { const list = document.getElementById('deliveryList'); list.innerHTML = orders.length ? orders.slice().reverse().map(order => { const orderId = escapeHtml(order.orderId); const codeForm = deliveryCodeRequests.has(order.orderId) ? `<form class="delivery-code-form" onsubmit="verifyDelivery(event, '${orderId}')"><input type="text" name="deliveryCode" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" placeholder="6-digit code" aria-label="Customer delivery code" required><button class="rider-button" type="submit">Confirm delivery</button></form>` : `<button class="rider-button" type="button" onclick="requestDeliveryCode('${orderId}')">Request code</button>`; return `<article class="delivery"><img src="${escapeHtml(order.image || 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=160&h=160&fit=crop')}" alt="${escapeHtml(order.name || 'Delivery')}"><div><strong>${escapeHtml(order.name || 'Food order')}</strong><span>${escapeHtml(order.customer?.name || order.email || 'Customer')} · ${escapeHtml(order.customer?.phone || '')}</span><span>${escapeHtml(order.customer?.address || 'Delivery address is in the order notes')}</span><span class="delivery-status">${escapeHtml(order.deliveryStatus || order.status || 'ASSIGNED')}</span></div>${order.status === 'DELIVERED' ? '<span>Completed</span>' : codeForm}</article>`; }).join('') : '<p class="empty">No deliveries assigned yet.</p>'; }
+    async function requestDeliveryCode(orderId) { const requestResponse = await fetch(`/api/orders/${encodeURIComponent(orderId)}/delivery-code`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ riderId: rider.id }) }); const requestResult = await requestResponse.json(); if (!requestResponse.ok) { window.alert(requestResult.error || 'Unable to request the delivery code.'); return; } deliveryCodeRequests.add(orderId); loadData(); }
+    async function verifyDelivery(event, orderId) { event.preventDefault(); const form = event.currentTarget; const deliveryCode = form.deliveryCode.value.trim(); const response = await fetch(`/api/orders/${encodeURIComponent(orderId)}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ status: 'DELIVERED', riderId: rider.id, deliveryCode }) }); const result = await response.json(); if (!response.ok) { window.alert(result.error || 'The delivery code is incorrect.'); return; } deliveryCodeRequests.delete(orderId); loadData(); }
+    function renderEarnings(earnings) { document.getElementById('availableAmount').textContent = formatMoney(earnings.available); document.getElementById('withdrawAvailableAmount').textContent = formatMoney(earnings.available); document.getElementById('earnedAmount').textContent = formatMoney(earnings.earned); document.getElementById('withdrawnAmount').textContent = formatMoney(earnings.withdrawn); document.getElementById('deliveredCount').textContent = earnings.delivered; const amountInput = document.getElementById('withdrawAmount'); amountInput.max = earnings.available; amountInput.placeholder = earnings.available > 0 ? `Up to ${formatMoney(earnings.available)}` : 'No balance available'; }
+    document.getElementById('withdrawForm').addEventListener('submit', async event => { event.preventDefault(); const message = document.getElementById('withdrawMessage'); const amount = Number(document.getElementById('withdrawAmount').value); const available = Number(document.getElementById('withdrawAmount').max || 0); if (amount > available) { message.textContent = `You can withdraw up to ${formatMoney(available)}.`; return; } if (!rider?.id || !rider.accountNumber) { message.textContent = 'Your rider session has no registered payout account. Log in again or register a new rider account.'; return; } try { const response = await fetch('/api/rider/withdrawals', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ riderId: rider.id, amount, schedule: document.getElementById('withdrawSchedule').value, accountNumber: rider.accountNumber }) }); const result = await response.json(); message.textContent = response.ok ? 'Withdrawal request submitted.' : result.error || 'Unable to submit withdrawal request.'; if (response.ok) { event.target.reset(); loadData(); } } catch (error) { message.textContent = 'Unable to connect to the server.'; } });
+    function renderMessages(messages) { document.getElementById('chatList').innerHTML = messages.length ? messages.map(message => `<div class="chat-message ${message.senderRole === 'admin' ? 'admin' : ''}"><strong>${escapeHtml(message.senderName)}</strong><span>${escapeHtml(message.message)} · ${new Date(message.createdAt).toLocaleString()}</span></div>`).join('') : '<p class="empty">No messages yet.</p>'; }
+    document.getElementById('chatForm').addEventListener('submit', async event => { event.preventDefault(); const input = document.getElementById('chatInput'); const response = await fetch('/api/rider/messages', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ riderId: rider.id, senderRole: 'rider', senderName: rider.name, message: input.value }) }); if (response.ok) { input.value = ''; loadData(); } });
+    renderAuth(); if (rider) showApp();
+  </script>
+</body>
+</html>

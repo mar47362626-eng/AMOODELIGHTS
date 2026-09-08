@@ -1,0 +1,33 @@
+[
+  {
+    "id": "RIDER-1788824076923",
+    "name": "Oluniyi Temilade",
+    "email": "olo@gmail.com",
+    "phone": "olamide",
+    "nin": "9029495484",
+    "guarantorName": "Oluniyi Temilade",
+    "guarantorPhone": "935934",
+    "password": "Olamide44#",
+    "status": "online",
+    "earningsPerDelivery": 1500,
+    "createdAt": "2026-09-07T23:34:36.923Z",
+    "updatedAt": "2026-09-07T23:37:00.216Z"
+  },
+  {
+    "id": "RIDER-1788824515669",
+    "name": "Oluniyi Temilade",
+    "email": "oluniyitemilade@gmail.com",
+    "phone": "olamide",
+    "nin": "09093403",
+    "guarantorName": "Oluniyi Temilade",
+    "guarantorPhone": "935934",
+    "bankName": "Opay",
+    "accountName": "olodo",
+    "accountNumber": "090999",
+    "password": "Olamide44#",
+    "status": "online",
+    "earningsPerDelivery": 1500,
+    "createdAt": "2026-09-07T23:41:55.669Z",
+    "updatedAt": "2026-09-08T01:40:14.542Z"
+  }
+]

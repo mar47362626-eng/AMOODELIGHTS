@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Amoo Delights</title>
+    <meta
+      name="description"
+      content="Delicious authentic meals delivered fresh to your door. Order now and enjoy quality food service."
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <!-- Loading Screen -->
+    <div id="loadingScreen" class="loading-screen">
+      <div class="loading-container">
+        <!-- Advertisement Section -->
+        <div id="advertisementSection" class="advertisement-section">
+          <div class="ad-slide active">
+            <h2>🍽️ Fresh Food Delivery</h2>
+            <p>Authentic traditional meals delivered fresh to your door</p>
+          </div>
+          <div class="ad-slide">
+            <h2>⭐ Quality Guaranteed</h2>
+            <p>4.9 rating with 2,000+ satisfied customers</p>
+          </div>
+          <div class="ad-slide">
+            <h2>🚚 Fast Delivery</h2>
+            <p>Get your order delivered in just 30-45 minutes</p>
+          </div>
+          <div class="ad-slide">
+            <h2>👨‍🍳 Expert Chefs</h2>
+            <p>Prepared by experienced chefs using traditional recipes</p>
+          </div>
+          <div class="ad-slide">
+            <h2>💰 Best Prices</h2>
+            <p>Affordable prices with regular discounts and offers</p>
+          </div>
+        </div>
+
+        <!-- Loading Progress Section -->
+        <div class="loading-progress-section">
+          <div class="loading-spinner"></div>
+          <h3>Loading Fresh Products...</h3>
+          
+          <div id="productLoadingList" class="product-loading-list"></div>
+          
+          <div class="progress-bar-container">
+            <div id="progressBar" class="progress-bar"></div>
+          </div>
+          <p id="loadingProgress" class="loading-progress">0%</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Content (Hidden initially) -->
+    <div id="mainContent" class="main-content">
+    <header class="hero">
+      <nav class="navbar">
+        <a href="#home" class="logo">Amoo Delights</a>
+        <button class="menu-toggle" aria-label="Toggle navigation">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+        <div class="nav-links">
+          <a href="#about">About</a>
+          <a href="#menu">Menu</a>
+          <a href="#experience">Why Us</a>
+          <a href="#contact">Contact</a>
+          <span id="authActions" class="auth-actions">
+            <button id="loginButton" class="nav-btn" onclick="openLoginModal()">Login</button>
+            <button id="registerButton" class="nav-btn nav-btn-primary" onclick="openRegisterModal()">Register</button>
+            <button id="profileButton" class="profile-button" onclick="toggleProfileMenu()" aria-label="Open account menu" title="Account" hidden>
+              <span aria-hidden="true">&#128100;</span>
+            </button>
+            <div id="accountPanel" class="account-panel" hidden>
+              <div class="account-panel-heading">
+                <div>
+                  <span class="account-kicker">My account</span>
+                  <strong id="accountWelcome">Welcome back</strong>
+                </div>
+                <button class="account-close" onclick="toggleProfileMenu()" aria-label="Close account menu">&times;</button>
+              </div>
+              <div class="account-tabs" role="tablist" aria-label="Account sections">
+                <button class="account-tab active" onclick="showAccountSection('profile', this)">Profile</button>
+                <button class="account-tab" onclick="showAccountSection('orders', this)">Orders</button>
+                <button class="account-tab" onclick="showAccountSection('inbox', this)">Inbox</button>
+                <button class="account-tab" onclick="showAccountSection('settings', this)">Settings</button>
+              </div>
+              <div id="accountContent" class="account-content"></div>
+              <button class="account-logout" onclick="logoutUser()">Log out</button>
+            </div>
+          </span>
+        </div>
+      </nav>
+
+      <div class="hero-content" id="home">
+        <div class="hero-text">
+          <p class="eyebrow">Quality African Cuisine</p>
+          <h1>Delicious traditional meals delivered fresh to your door.</h1>
+          <p class="lead">
+            Enjoy authentic, home-made quality food prepared with care and delivered fast. Order your favorites now!
+          </p>
+          <div class="hero-actions">
+            <a href="#menu" class="btn btn-primary">View Menu</a>
+            <a href="#contact" class="btn btn-secondary">Book a Table</a>
+          </div>
+          <ul class="hero-highlights">
+            <li>⭐ 4.9 average rating</li>
+            <li>🍜 Made with fresh ingredients</li>
+            <li>🚚 Fast delivery</li>
+          </ul>
+        </div>
+
+        <div class="hero-card">
+          <h3>Today’s Special</h3>
+          <p>Jollof Rice</p>
+          <div class="hero-video-card">
+            <img
+              class="hero-video"
+              src="https://images.unsplash.com/photo-1601050690597-df0568f70950?w=900&h=600&fit=crop"
+              alt="Freshly prepared jollof rice"
+            />
+          </div>
+          <p class="card-note">Golden, aromatic, and delicious.</p>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="section intro" id="about">
+        <div class="section-heading">
+          <p class="eyebrow">Our Story</p>
+          <h2>Crafted with passion and tradition</h2>
+        </div>
+        <div class="about-grid">
+          <div>
+            <p>
+              Fresh Food Delivery brings you authentic, home-made quality meals prepared with the finest ingredients. Every dish is prepared with care and dedication to ensure you get the best flavors delivered right to your doorstep.
+            </p>
+          </div>
+          <div class="info-box">
+            <h3>Open Daily</h3>
+            <p>11:00 AM – 10:00 PM</p>
+            <h3>Location</h3>
+            <p>123 Mango Street, Downtown</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="menu">
+        <div class="section-heading">
+          <p class="eyebrow">Our Menu</p>
+          <h2>Delicious meals delivered fresh</h2>
+        </div>
+        <div class="menu-grid">
+          <article class="menu-card">
+            <div class="menu-card-content">
+              <h3>🍚 Jollof Rice</h3>
+              <p>Golden, aromatic rice cooked to perfection with rich tomato and spice flavors.</p>
+            </div>
+          </article>
+          <article class="menu-card">
+            <div class="menu-card-content">
+              <h3>🥘 White Rice</h3>
+              <p>Fluffy, perfectly seasoned white rice - a perfect side for any meal.</p>
+            </div>
+          </article>
+          <article class="menu-card">
+            <div class="menu-card-content">
+              <h3>🥔 Amola</h3>
+              <p>Delicious pounded yam served with savory sauce and protein.</p>
+            </div>
+          </article>
+          <article class="menu-card">
+            <div class="menu-card-content">
+              <h3>🍗 Fried Chicken</h3>
+              <p>Crispy, golden fried chicken seasoned with our special blend of spices.</p>
+            </div>
+          </article>
+          <article class="menu-card">
+            <div class="menu-card-content">
+              <h3>🥬 Vegetable Soup</h3>
+              <p>Hearty, nutritious soup loaded with fresh vegetables and herbs.</p>
+            </div>
+          </article>
+          <article class="menu-card">
+            <div class="menu-card-content">
+              <h3>🍲 Pepper Soup</h3>
+              <p>Warming spicy pepper soup with meat and aromatic seasonings.</p>
+            </div>
+          </article>
+          <article class="menu-card">
+            <div class="menu-card-content">
+              <h3>🥩 Grilled Beef</h3>
+              <p>Tender, perfectly grilled beef seasoned and served with vegetables.</p>
+            </div>
+          </article>
+          <article class="menu-card">
+            <div class="menu-card-content">
+              <h3>🍛 Rice & Stew</h3>
+              <p>Classic rice with rich, flavorful stew made with quality ingredients.</p>
+            </div>
+          </article>
+        </div>
+        <div class="menu-action">
+          <a href="menu-view.html" class="btn btn-primary">View All Menu</a>
+        </div>
+      </section>
+
+      <section class="section experience" id="experience">
+        <div class="section-heading">
+          <p class="eyebrow">Why Guests Choose Us</p>
+          <h2>Every visit feels special</h2>
+        </div>
+        <div class="feature-grid">
+          <div class="feature-card">
+            <h3>Fresh Ingredients</h3>
+            <p>We source vibrant produce and premium spices every day.</p>
+          </div>
+          <div class="feature-card">
+            <h3>Friendly Service</h3>
+            <p>Our team creates a warm, welcoming atmosphere for every guest.</p>
+          </div>
+          <div class="feature-card">
+            <h3>Quick Delivery</h3>
+            <p>Enjoy your favorites at home with fast and reliable delivery.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section contact" id="contact">
+        <div class="section-heading">
+          <p class="eyebrow">Reserve or Visit</p>
+          <h2>We would love to welcome you</h2>
+        </div>
+        <div class="contact-grid">
+          <form id="contactForm">
+            <input type="text" placeholder="Your Name" required />
+            <input type="email" placeholder="Your Email" required />
+            <textarea rows="4" placeholder="Tell us about your visit"></textarea>
+            <button type="submit" class="btn btn-primary">Send Message</button>
+            <p id="formMessage" class="form-message"></p>
+          </form>
+          <div class="contact-info">
+            <h3>Visit Us</h3>
+            <p>123 Mango Street</p>
+            <p>Downtown District</p>
+            <p>+1 (555) 123-4567</p>
+            <p>hello@thaispice.com</p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <p>© <span id="year"></span> Amoo Delights. Crafted for flavor and comfort.</p>
+    </footer>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="auth-modal">
+      <div class="auth-modal-content">
+        <div class="auth-modal-header">
+          <h2>👤 Login</h2>
+          <button class="close-btn" onclick="closeLoginModal()">&times;</button>
+        </div>
+        <form id="loginForm" onsubmit="submitLogin(event)">
+          <div class="form-group">
+            <label for="loginEmail">Email Address *</label>
+            <input type="email" id="loginEmail" name="loginEmail" required>
+          </div>
+          <div class="form-group">
+            <label for="loginPassword">Password *</label>
+            <input type="password" id="loginPassword" name="loginPassword" required>
+          </div>
+          <button type="submit" class="btn btn-primary auth-submit">Login</button>
+          <p class="auth-switch">
+            Don't have an account? <a href="#" onclick="switchToRegister()" class="auth-switch-link">Register here</a>
+          </p>
+        </form>
+      </div>
+    </div>
+
+    <!-- Register Modal -->
+    <div id="registerModal" class="auth-modal">
+      <div class="auth-modal-content">
+        <div class="auth-modal-header">
+          <h2>📝 Register</h2>
+          <button class="close-btn" onclick="closeRegisterModal()">&times;</button>
+        </div>
+        <form id="registerForm" onsubmit="submitRegister(event)">
+          <div class="form-group">
+            <label for="regName">Full Name *</label>
+            <input type="text" id="regName" name="regName" required>
+          </div>
+          <div class="form-group">
+            <label for="regEmail">Email Address *</label>
+            <input type="email" id="regEmail" name="regEmail" required>
+          </div>
+          <div class="form-group">
+            <label for="regPhone">Phone Number *</label>
+            <input type="tel" id="regPhone" name="regPhone" required>
+          </div>
+          <div class="form-group">
+            <label for="regAddress">Address *</label>
+            <input type="text" id="regAddress" name="regAddress" placeholder="Street address" required>
+          </div>
+          <div class="form-group">
+            <label for="regPassword">Password *</label>
+            <input type="password" id="regPassword" name="regPassword" required>
+          </div>
+          <div class="form-group">
+            <label for="regPasswordConfirm">Confirm Password *</label>
+            <input type="password" id="regPasswordConfirm" name="regPasswordConfirm" required>
+          </div>
+          <button type="submit" class="btn btn-primary auth-submit">Create Account</button>
+          <p class="auth-switch">
+            Already have an account? <a href="#" onclick="switchToLogin()" class="auth-switch-link">Login here</a>
+          </p>
+        </form>
+      </div>
+    </div>
+
+    </div>
+
+    <script>
+      // Products List
+      const products = [
+        { name: '🍚 Jollof Rice', price: '$12' },
+        { name: '🥘 White Rice', price: '$8' },
+        { name: '🥔 Amola', price: '$10' },
+        { name: '🍗 Fried Chicken', price: '$14' },
+        { name: '🥬 Vegetable Soup', price: '$9' },
+        { name: '🍲 Pepper Soup', price: '$11' },
+        { name: '🥩 Grilled Beef', price: '$16' },
+        { name: '🍛 Rice & Stew', price: '$13' }
+      ];
+
+      // Loading Function
+      function loadProducts() {
+        const loadingList = document.getElementById('productLoadingList');
+        const progressText = document.getElementById('loadingProgress');
+        const progressBar = document.getElementById('progressBar');
+        const loadingScreen = document.getElementById('loadingScreen');
+        const mainContent = document.getElementById('mainContent');
+        const adSlides = document.querySelectorAll('.ad-slide');
+        let currentProduct = 0;
+        let currentAd = 0;
+        const totalProducts = products.length;
+
+        const adRotateInterval = setInterval(() => {
+          adSlides.forEach(slide => slide.classList.remove('active'));
+          adSlides.forEach(slide => slide.style.display = 'none');
+          currentAd = (currentAd + 1) % adSlides.length;
+          adSlides[currentAd].classList.add('active');
+          adSlides[currentAd].style.display = 'block';
+        }, 900);
+
+        const loadInterval = setInterval(() => {
+          if (currentProduct < totalProducts) {
+            const product = products[currentProduct];
+            const productItem = document.createElement('div');
+            productItem.className = 'product-item';
+            productItem.innerHTML = `<span class="check-mark">✓</span> ${product.name}`;
+            loadingList.appendChild(productItem);
+
+            const progress = Math.round((currentProduct + 1) / totalProducts * 100);
+            progressText.textContent = progress + '%';
+            progressBar.style.width = progress + '%';
+            currentProduct++;
+            return;
+          }
+
+          clearInterval(loadInterval);
+          clearInterval(adRotateInterval);
+          progressText.textContent = '100%';
+          progressBar.style.width = '100%';
+          loadingScreen.style.opacity = '0';
+          loadingScreen.style.transition = 'opacity 0.5s ease-out';
+
+          setTimeout(() => {
+            loadingScreen.style.display = 'none';
+            mainContent.style.display = 'block';
+            mainContent.style.animation = 'fadeIn 0.5s ease-in';
+          }, 500);
+        }, 250);
+      }
+
+      // Start loading when page loads
+      window.addEventListener('load', loadProducts);
+
+      // Login Modal Functions
+      function openLoginModal() {
+        document.getElementById('loginModal').style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closeLoginModal() {
+        document.getElementById('loginModal').style.display = 'none';
+        document.body.style.overflow = 'auto';
+        document.getElementById('loginForm').reset();
+      }
+
+      // Register Modal Functions
+      function openRegisterModal() {
+        document.getElementById('registerModal').style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closeRegisterModal() {
+        document.getElementById('registerModal').style.display = 'none';
+        document.body.style.overflow = 'auto';
+        document.getElementById('registerForm').reset();
+      }
+
+      // Switch between modals
+      function switchToRegister() {
+        closeLoginModal();
+        openRegisterModal();
+      }
+
+      function switchToLogin() {
+        closeRegisterModal();
+        openLoginModal();
+      }
+
+      function setAuthenticatedUser(user) {
+        localStorage.setItem('amooAuthenticatedUser', JSON.stringify(user));
+        document.getElementById('loginButton').hidden = true;
+        document.getElementById('registerButton').hidden = true;
+        document.getElementById('profileButton').hidden = false;
+        renderAccountSection('profile');
+      }
+
+      function restoreAuthenticatedUser() {
+        try {
+          const user = JSON.parse(localStorage.getItem('amooAuthenticatedUser'));
+          if (user) setAuthenticatedUser(user);
+        } catch (error) {
+          localStorage.removeItem('amooAuthenticatedUser');
+        }
+      }
+
+      function toggleProfileMenu() {
+        const panel = document.getElementById('accountPanel');
+        panel.hidden = !panel.hidden;
+        if (!panel.hidden) renderAccountSection('profile');
+      }
+
+      function escapeHtml(value) {
+        return String(value || '').replace(/[&<>'"]/g, character => ({
+          '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;'
+        }[character]));
+      }
+
+      function getAccountUser() {
+        try {
+          return JSON.parse(localStorage.getItem('amooAuthenticatedUser') || '{}');
+        } catch (error) {
+          return {};
+        }
+      }
+
+      function belongsToAccount(record, user) {
+        const accountEmail = String(user.email || '').trim().toLowerCase();
+        const accountName = String(user.name || '').trim().toLowerCase();
+        const recordCustomer = record.customer || {};
+        const recordEmail = String(record.email || recordCustomer.email || '').trim().toLowerCase();
+        const recordName = String(recordCustomer.name || record.customerName || '').trim().toLowerCase();
+        return (accountEmail && recordEmail === accountEmail) || (accountName && recordName === accountName);
+      }
+
+      async function getOrders() {
+        const user = getAccountUser();
+        try {
+          const response = await fetch('/api/orders');
+          if (!response.ok) throw new Error('Unable to load orders');
+          const orders = await response.json();
+          return orders.filter(order => belongsToAccount(order, user));
+        } catch (error) {
+          try {
+            const orders = JSON.parse(localStorage.getItem('amooOrders') || '[]');
+            return orders.filter(order => belongsToAccount(order, user));
+          } catch (storageError) {
+            return [];
+          }
+        }
+      }
+
+      async function getInboxMessages() {
+        const user = getAccountUser();
+        try {
+          const [messagesResponse, ordersResponse] = await Promise.all([fetch('/api/inbox'), fetch('/api/orders')]);
+          if (!messagesResponse.ok || !ordersResponse.ok) throw new Error('Unable to load inbox');
+          const [messages, orders] = await Promise.all([messagesResponse.json(), ordersResponse.json()]);
+          return messages.filter(message => {
+            if (belongsToAccount(message, user)) return true;
+            const order = orders.find(item => item.orderId && item.orderId === message.orderId);
+            return order ? belongsToAccount(order, user) : false;
+          });
+        } catch (error) {
+          try {
+            const messages = JSON.parse(localStorage.getItem('amooInbox') || '[]');
+            return messages.filter(message => belongsToAccount(message, user));
+          } catch (storageError) {
+            return [];
+          }
+        }
+      }
+
+      function showAccountSection(section, button) {
+        document.querySelectorAll('.account-tab').forEach(tab => tab.classList.remove('active'));
+        if (button) button.classList.add('active');
+        renderAccountSection(section);
+      }
+
+      async function renderAccountSection(section) {
+        const user = getAccountUser();
+        const content = document.getElementById('accountContent');
+        const welcome = document.getElementById('accountWelcome');
+        welcome.textContent = `Hi, ${user.name || 'Amoo customer'}`;
+
+        if (section === 'profile') {
+          content.innerHTML = `
+            <div class="account-avatar" aria-hidden="true">&#128100;</div>
+            <div class="profile-details">
+              <strong>${escapeHtml(user.name || 'Amoo customer')}</strong>
+              <span>${escapeHtml(user.email || 'No email saved')}</span>
+              <span>${escapeHtml(user.phone || 'No phone saved')}</span>
+              <span>${escapeHtml(user.address || 'No delivery address saved')}</span>
+            </div>`;
+          return;
+        }
+
+        if (section === 'orders') {
+          content.innerHTML = '<div class="account-empty"><span aria-hidden="true">&#8987;</span><strong>Loading orders...</strong></div>';
+          const orders = await getOrders();
+          content.innerHTML = orders.length
+            ? orders.map(order => `<div class="account-list-item"><strong>${escapeHtml(order.name || 'Food order')}</strong><span>Order ${escapeHtml(order.orderId || '')} · Qty: ${escapeHtml(order.quantity || '1')} · ${escapeHtml(order.status || 'Being prepared')} · ${escapeHtml(order.total || '')}</span><span>${escapeHtml(order.specialInstructions || 'No special instructions')}</span></div>`).join('')
+            : '<div class="account-empty"><span aria-hidden="true">&#128722;</span><strong>No orders yet</strong><span>Your future orders will appear here.</span></div>';
+          return;
+        }
+
+        if (section === 'inbox') {
+          content.innerHTML = '<div class="account-empty"><span aria-hidden="true">&#8987;</span><strong>Loading messages...</strong></div>';
+          const messages = await getInboxMessages();
+          content.innerHTML = messages.length
+            ? messages.map(message => `<div class="account-list-item"><strong>${escapeHtml(message.title || 'Order update')}</strong><span>${escapeHtml(message.message || 'You have a new account message.')}</span><span>Order ${escapeHtml(message.orderId || '')} · ${escapeHtml(message.createdAt ? new Date(message.createdAt).toLocaleString() : '')}</span></div>`).join('')
+            : `<div class="account-list-item"><strong>Welcome to Amoo Delights</strong><span>Your account is ready for fresh meals.</span></div>`;
+          return;
+        }
+
+        content.innerHTML = `
+          <label class="setting-row"><span>Dark mode</span><input type="checkbox" onchange="toggleTheme(this.checked)"></label>
+          <form class="password-form" onsubmit="changePassword(event)">
+            <label for="newPassword">Change password</label>
+            <input id="newPassword" type="password" minlength="6" placeholder="New password" required>
+            <button class="account-action" type="submit">Update password</button>
+          </form>`;
+        content.querySelector('input[type="checkbox"]').checked = document.body.classList.contains('dark-mode');
+      }
+
+      function toggleTheme(isDark) {
+        document.body.classList.toggle('dark-mode', isDark);
+        localStorage.setItem('amooTheme', isDark ? 'dark' : 'light');
+      }
+
+      function changePassword(event) {
+        event.preventDefault();
+        alert('Your password has been updated.');
+        event.target.reset();
+      }
+
+      function logoutUser() {
+        localStorage.removeItem('amooAuthenticatedUser');
+        document.getElementById('accountPanel').hidden = true;
+        document.getElementById('profileButton').hidden = true;
+        document.getElementById('loginButton').hidden = false;
+        document.getElementById('registerButton').hidden = false;
+      }
+
+      // Submit Login
+      async function submitLogin(event) {
+        event.preventDefault();
+        const email = document.getElementById('loginEmail').value.trim().toLowerCase();
+        const password = document.getElementById('loginPassword').value;
+
+        try {
+          const res = await fetch('/api/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, password })
+          });
+          const body = await res.json();
+          if (!res.ok) throw new Error(body.error || 'Login failed');
+          setAuthenticatedUser(body.user);
+          alert(`✅ Login Successful!\n\nWelcome back, ${body.user.name || email}.`);
+          closeLoginModal();
+        } catch (error) {
+          alert('❌ Login failed: ' + error.message);
+        }
+      }
+
+      // Submit Register
+      async function submitRegister(event) {
+        event.preventDefault();
+        const name = document.getElementById('regName').value;
+        const email = document.getElementById('regEmail').value;
+        const phone = document.getElementById('regPhone').value;
+        const address = document.getElementById('regAddress').value;
+        const password = document.getElementById('regPassword').value;
+        const confirmPassword = document.getElementById('regPasswordConfirm').value;
+
+        if (password !== confirmPassword) {
+          alert('❌ Passwords do not match!');
+          return;
+        }
+
+        // Send registration to backend
+        try {
+          const res = await fetch('/api/register', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name, email, phone, address, password })
+          });
+          const body = await res.json();
+          if (!res.ok) throw new Error(body.error || 'Registration failed');
+          setAuthenticatedUser({ name, email, phone, address });
+          alert('✅ Registration Successful! You are now logged in.');
+          closeRegisterModal();
+        } catch (err) {
+          if (err.message === 'Email already registered') {
+            alert('This email is already registered. Please log in instead.');
+            closeRegisterModal();
+            openLoginModal();
+          } else {
+            alert('❌ Registration failed: ' + err.message);
+          }
+        }
+      }
+
+      restoreAuthenticatedUser();
+      if (localStorage.getItem('amooTheme') === 'dark') document.body.classList.add('dark-mode');
+
+      // Close modals when clicking outside
+      document.getElementById('loginModal').addEventListener('click', function(event) {
+        if (event.target === this) {
+          closeLoginModal();
+        }
+      });
+
+      document.getElementById('registerModal').addEventListener('click', function(event) {
+        if (event.target === this) {
+          closeRegisterModal();
+        }
+      });
+
+      // Close modals with Escape key
+      document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape') {
+          closeLoginModal();
+          closeRegisterModal();
+        }
+      });
+    </script>
+    <script src="script.js"></script>
+  </body>
+</html>

@@ -1,0 +1,26 @@
+[
+  {
+    "id": "WD-1788824583148",
+    "riderId": "RIDER-1788824515669",
+    "riderName": "Oluniyi Temilade",
+    "amount": 1500,
+    "schedule": "weekly",
+    "bankName": "Opay",
+    "accountName": "olodo",
+    "accountNumber": "090999",
+    "status": "REQUESTED",
+    "requestedAt": "2026-09-07T23:43:03.148Z"
+  },
+  {
+    "id": "WD-1788831910736",
+    "riderId": "RIDER-1788824515669",
+    "riderName": "Oluniyi Temilade",
+    "amount": 4500,
+    "schedule": "weekly",
+    "bankName": "Opay",
+    "accountName": "olodo",
+    "accountNumber": "090999",
+    "status": "REQUESTED",
+    "requestedAt": "2026-09-08T01:45:10.736Z"
+  }
+]

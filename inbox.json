@@ -1,0 +1,142 @@
+[
+  {
+    "email": "oluniyitemilade@gmail.com",
+    "title": "Order received",
+    "message": "Your Amola order is being processed.",
+    "orderId": "ORD-1788826979071",
+    "type": "order",
+    "image": "https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?w=500&h=300&fit=crop",
+    "id": 1788826979074,
+    "createdAt": "2026-09-08T00:22:59.073Z"
+  },
+  {
+    "email": "oluniyitemilade@gmail.com",
+    "title": "Order received",
+    "message": "Your Amola order is being processed.",
+    "orderId": "ORD-1788827136285",
+    "type": "order",
+    "image": "https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?w=500&h=300&fit=crop",
+    "id": 1788827136307,
+    "createdAt": "2026-09-08T00:25:36.306Z"
+  },
+  {
+    "email": "oluniyitemilade@gmail.com",
+    "title": "Order approved",
+    "message": "Your Amola order has been approved and is being prepared.",
+    "orderId": "ORD-1788827136285",
+    "image": "https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?w=500&h=300&fit=crop",
+    "type": "status",
+    "status": "APPROVED",
+    "createdAt": "2026-09-08T00:26:25.334Z"
+  },
+  {
+    "email": "oluniyitemilade@gmail.com",
+    "title": "Order approved",
+    "message": "Your Amola order has been approved and is being prepared.",
+    "orderId": "ORD-1788826979071",
+    "image": "https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?w=500&h=300&fit=crop",
+    "type": "status",
+    "status": "APPROVED",
+    "createdAt": "2026-09-08T00:26:27.567Z"
+  },
+  {
+    "email": "oluniyitemilade@gmail.com",
+    "title": "Order received",
+    "message": "Your Amola order is being processed.",
+    "orderId": "ORD-1788830610001",
+    "type": "order",
+    "image": "https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?w=500&h=300&fit=crop",
+    "id": 1788830610042,
+    "createdAt": "2026-09-08T01:23:30.041Z"
+  },
+  {
+    "email": "oluniyitemilade@gmail.com",
+    "title": "Order received",
+    "message": "Your White Rice order is being processed.",
+    "orderId": "ORD-1788830707775",
+    "type": "order",
+    "image": "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=500&h=300&fit=crop",
+    "id": 1788830707826,
+    "createdAt": "2026-09-08T01:25:07.825Z"
+  },
+  {
+    "email": "oluniyitemilade@gmail.com",
+    "title": "Order received",
+    "message": "Your White Rice order is being processed.",
+    "orderId": "ORD-1788830825137",
+    "type": "order",
+    "image": "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=500&h=300&fit=crop",
+    "id": 1788830825161,
+    "createdAt": "2026-09-08T01:27:05.160Z"
+  },
+  {
+    "email": "oluniyitemilade@gmail.com",
+    "title": "Order received",
+    "message": "Your White Rice order is being processed.",
+    "orderId": "ORD-1788830843565",
+    "type": "order",
+    "image": "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=500&h=300&fit=crop",
+    "id": 1788830843587,
+    "createdAt": "2026-09-08T01:27:23.586Z"
+  },
+  {
+    "email": "oluniyitemilade@gmail.com",
+    "title": "Order received",
+    "message": "Your White Rice order is being processed.",
+    "orderId": "ORD-1788831006354",
+    "type": "order",
+    "image": "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=500&h=300&fit=crop",
+    "id": 1788831006418,
+    "createdAt": "2026-09-08T01:30:06.417Z"
+  },
+  {
+    "email": "oluniyitemilade@gmail.com",
+    "title": "Order approved",
+    "message": "Your Amola order has been approved and is being prepared.",
+    "orderId": "ORD-1788830610001",
+    "image": "https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?w=500&h=300&fit=crop",
+    "type": "status",
+    "status": "APPROVED",
+    "createdAt": "2026-09-08T01:30:33.568Z"
+  },
+  {
+    "email": "oluniyitemilade@gmail.com",
+    "title": "Order approved",
+    "message": "Your White Rice order has been approved and is being prepared.",
+    "orderId": "ORD-1788830707775",
+    "image": "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=500&h=300&fit=crop",
+    "type": "status",
+    "status": "APPROVED",
+    "createdAt": "2026-09-08T01:30:51.078Z"
+  },
+  {
+    "email": "oluniyitemilade@gmail.com",
+    "title": "Order approved",
+    "message": "Your White Rice order has been approved and is being prepared.",
+    "orderId": "ORD-1788830825137",
+    "image": "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=500&h=300&fit=crop",
+    "type": "status",
+    "status": "APPROVED",
+    "createdAt": "2026-09-08T01:30:53.377Z"
+  },
+  {
+    "email": "oluniyitemilade@gmail.com",
+    "title": "Order approved",
+    "message": "Your White Rice order has been approved and is being prepared.",
+    "orderId": "ORD-1788830843565",
+    "image": "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=500&h=300&fit=crop",
+    "type": "status",
+    "status": "APPROVED",
+    "createdAt": "2026-09-08T01:30:56.438Z"
+  },
+  {
+    "email": "oluniyitemilade@gmail.com",
+    "title": "Order approved",
+    "message": "Your White Rice order has been approved and is being prepared.",
+    "orderId": "ORD-1788831006354",
+    "image": "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=500&h=300&fit=crop",
+    "type": "status",
+    "status": "APPROVED",
+    "createdAt": "2026-09-08T01:30:58.645Z"
+  }
+]
