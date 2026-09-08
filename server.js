@@ -177,7 +177,7 @@ const server = http.createServer((req, res) => {
     res.end();
     return;
   }
-  const url = req.url === '/' ? '/index.html' : req.url;
+  const url = req.url === '/' ? '/index.html' : req.url === '/rider' || req.url === '/rider/' ? '/rider.html' : req.url === '/admin' || req.url === '/admin/' ? '/admin.html' : req.url;
   const safePath = path.normalize(url).replace(/^\./, '');
   const filePath = path.join(__dirname, safePath);
 
