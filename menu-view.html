@@ -1458,6 +1458,9 @@
     </div>
 
     <script>
+      const API_BASE = 'https://amoodelights.onrender.com';
+      const nativeFetch = window.fetch.bind(window);
+      window.fetch = (input, options) => nativeFetch(typeof input === 'string' && input.startsWith('/api/') ? `${API_BASE}${input}` : input, options);
       if (localStorage.getItem('amooTheme') === 'dark') {
         document.body.classList.add('dark-mode');
       }

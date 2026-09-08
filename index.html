@@ -329,7 +329,7 @@
       const nativeFetch = window.fetch.bind(window);
       window.fetch = (input, options) => nativeFetch(typeof input === 'string' && input.startsWith('/api/') ? `${API_BASE}${input}` : input, options);
       // Products List
-      const products = [
+      const fallbackProducts = [
         { name: '🍚 Jollof Rice', price: '$12' },
         { name: '🥘 White Rice', price: '$8' },
         { name: '🥔 Amola', price: '$10' },
@@ -341,7 +341,7 @@
       ];
 
       // Loading Function
-      function loadProducts() {
+      async function loadProducts() {
         const loadingList = document.getElementById('productLoadingList');
         const progressText = document.getElementById('loadingProgress');
         const progressBar = document.getElementById('progressBar');
@@ -350,6 +350,16 @@
         const adSlides = document.querySelectorAll('.ad-slide');
         let currentProduct = 0;
         let currentAd = 0;
+        let products = fallbackProducts;
+        try {
+          const response = await fetch('/api/products');
+          if (response.ok) {
+            const apiProducts = await response.json();
+            if (Array.isArray(apiProducts) && apiProducts.length) products = apiProducts;
+          }
+        } catch (error) {
+          console.warn('Using fallback loading products:', error.message);
+        }
         const totalProducts = products.length;
 
         const adRotateInterval = setInterval(() => {
@@ -362,7 +372,7 @@
 
         const loadInterval = setInterval(() => {
           if (currentProduct < totalProducts) {
-            const product = products[currentProduct];
+            const product = fallbackProducts[currentProduct];
             const productItem = document.createElement('div');
             productItem.className = 'product-item';
             productItem.innerHTML = `<span class="check-mark">✓</span> ${product.name}`;
