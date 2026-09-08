@@ -212,14 +212,7 @@ const server = http.createServer((req, res) => {
 
   // Serve products JSON via API
   if (url === '/api/products' && req.method === 'GET') {
-    try {
-      const products = fs.readFileSync(path.join(__dirname, 'product.json'), 'utf8');
-      res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
-      res.end(products);
-    } catch (err) {
-      res.writeHead(500, { 'Content-Type': 'application/json; charset=utf-8' });
-      res.end(JSON.stringify({ error: 'Unable to read products' }));
-    }
+    sendJson(res, 200, readJson('product.json'));
     return;
   }
 
@@ -235,8 +228,7 @@ const server = http.createServer((req, res) => {
           return;
         }
 
-        const productsPath = path.join(__dirname, 'product.json');
-        const products = JSON.parse(fs.readFileSync(productsPath, 'utf8') || '[]');
+        const products = readJson('product.json');
         const newProduct = {
           id: products.reduce((highestId, item) => Math.max(highestId, Number(item.id) || 0), 0) + 1,
           name: String(product.name).trim(),
@@ -267,15 +259,7 @@ const server = http.createServer((req, res) => {
   const productMatch = url.match(/^\/api\/products\/(\d+)$/);
   if (productMatch && (req.method === 'PUT' || req.method === 'DELETE')) {
     const productId = Number(productMatch[1]);
-    const productsPath = path.join(__dirname, 'product.json');
-    let products;
-    try {
-      products = JSON.parse(fs.readFileSync(productsPath, 'utf8') || '[]');
-    } catch (err) {
-      res.writeHead(500, { 'Content-Type': 'application/json; charset=utf-8' });
-      res.end(JSON.stringify({ error: 'Unable to read products' }));
-      return;
-    }
+    const products = readJson('product.json');
 
     const productIndex = products.findIndex(product => Number(product.id) === productId);
     if (productIndex === -1) {
@@ -331,7 +315,7 @@ const server = http.createServer((req, res) => {
         const credentials = JSON.parse(body);
         const email = String(credentials.email || '').trim().toLowerCase();
         const submittedPassword = String(credentials.password || '');
-        const users = JSON.parse(fs.readFileSync(path.join(__dirname, 'user.json'), 'utf8') || '[]');
+        const users = readJson('user.json');
         const user = users.find(item => String(item.email || '').trim().toLowerCase() === email && item.password === submittedPassword);
         if (!user) {
           res.writeHead(401, { 'Content-Type': 'application/json; charset=utf-8' });
@@ -358,14 +342,7 @@ const server = http.createServer((req, res) => {
       try {
         const user = JSON.parse(body);
         user.email = String(user.email || '').trim().toLowerCase();
-        const usersPath = path.join(__dirname, 'user.json');
-        let users = [];
-        try {
-          const existing = fs.readFileSync(usersPath, 'utf8');
-          users = JSON.parse(existing || '[]');
-        } catch (e) {
-          users = [];
-        }
+        const users = readJson('user.json');
 
         // Basic duplicate check by email
         if (users.find(u => String(u.email || '').trim().toLowerCase() === user.email)) {
@@ -639,26 +616,12 @@ const server = http.createServer((req, res) => {
   }
 
   if (url === '/api/orders' && req.method === 'GET') {
-    try {
-      const orders = JSON.parse(fs.readFileSync(path.join(__dirname, 'order.json'), 'utf8') || '[]').map(({ deliveryCode, ...order }) => order);
-      res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
-      res.end(JSON.stringify(orders));
-    } catch (err) {
-      res.writeHead(500, { 'Content-Type': 'application/json; charset=utf-8' });
-      res.end(JSON.stringify({ error: 'Unable to read orders' }));
-    }
+    sendJson(res, 200, readJson('order.json').map(({ deliveryCode, ...order }) => order));
     return;
   }
 
   if (url === '/api/inbox' && req.method === 'GET') {
-    try {
-      const messages = fs.readFileSync(path.join(__dirname, 'inbox.json'), 'utf8');
-      res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
-      res.end(messages);
-    } catch (err) {
-      res.writeHead(500, { 'Content-Type': 'application/json; charset=utf-8' });
-      res.end(JSON.stringify({ error: 'Unable to read inbox' }));
-    }
+    sendJson(res, 200, readJson('inbox.json'));
     return;
   }
 
@@ -680,12 +643,12 @@ const server = http.createServer((req, res) => {
           return;
         }
 
-        const orders = JSON.parse(fs.readFileSync(ordersPath, 'utf8') || '[]');
-        const messages = JSON.parse(fs.readFileSync(inboxPath, 'utf8') || '[]');
+        const orders = readJson('order.json');
+        const messages = readJson('inbox.json');
         let productImage = String(order.image || '').trim();
         if (!productImage) {
           try {
-            const products = JSON.parse(fs.readFileSync(path.join(__dirname, 'product.json'), 'utf8') || '[]');
+            const products = readJson('product.json');
             const product = products.find(item => item.name === order.name || item.name === order.food);
             productImage = String(product?.image || '').trim();
           } catch (productError) {
@@ -744,7 +707,7 @@ const server = http.createServer((req, res) => {
         const allowedStatuses = ['PENDING', 'APPROVED', 'PREPARING', 'READY', 'DELIVERED', 'CANCELLED'];
         const status = String(update.status || '').toUpperCase();
         const ordersPath = path.join(__dirname, 'order.json');
-        const orders = JSON.parse(fs.readFileSync(ordersPath, 'utf8') || '[]');
+        const orders = readJson('order.json');
         const orderIndex = orders.findIndex(order => String(order.orderId) === orderId);
 
         if (orderIndex === -1) {
@@ -768,7 +731,7 @@ const server = http.createServer((req, res) => {
         orders[orderIndex].status = status;
         orders[orderIndex].updatedAt = new Date().toISOString();
         const inboxPath = path.join(__dirname, 'inbox.json');
-        const messages = JSON.parse(fs.readFileSync(inboxPath, 'utf8') || '[]');
+        const messages = readJson('inbox.json');
         const order = orders[orderIndex];
         const customerEmail = order.email || order.customer?.email || '';
 
@@ -825,15 +788,7 @@ const server = http.createServer((req, res) => {
   }
 
   if (url === '/api/users' && req.method === 'GET') {
-    try {
-      const users = JSON.parse(fs.readFileSync(path.join(__dirname, 'user.json'), 'utf8') || '[]');
-      const safeUsers = users.map(({ password, ...user }) => user);
-      res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
-      res.end(JSON.stringify(safeUsers));
-    } catch (err) {
-      res.writeHead(500, { 'Content-Type': 'application/json; charset=utf-8' });
-      res.end(JSON.stringify({ error: 'Unable to read users' }));
-    }
+    sendJson(res, 200, readJson('user.json').map(({ password, ...user }) => user));
     return;
   }
 
@@ -844,8 +799,7 @@ const server = http.createServer((req, res) => {
       try {
         const item = JSON.parse(body);
         const fileName = url === '/api/orders' ? 'order.json' : 'inbox.json';
-        const file = path.join(__dirname, fileName);
-        const items = JSON.parse(fs.readFileSync(file, 'utf8') || '[]');
+        const items = readJson(fileName);
         items.push({ ...item, id: item.id || Date.now(), createdAt: item.createdAt || new Date().toISOString() });
         writeJson(fileName, items);
         res.writeHead(201, { 'Content-Type': 'application/json; charset=utf-8' });
