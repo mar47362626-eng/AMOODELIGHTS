@@ -78,13 +78,13 @@
       <h1 id="authTitle">Rider login</h1>
       <p id="authLead">Sign in to manage your deliveries and earnings.</p>
       <form id="authForm" class="auth-form">
-        <input id="authName" placeholder="Full name" autocomplete="name" hidden>
-        <input id="authPhone" placeholder="Phone number" autocomplete="tel" hidden>
+        <input id="authName" placeholder="Full name" pattern="[A-Za-z][A-Za-z .'-]*" title="Use letters, spaces, apostrophes, or hyphens" autocomplete="name" hidden>
+        <input id="authPhone" placeholder="Phone number" inputmode="tel" pattern="[0-9+() -]{7,}" title="Use a valid phone number" autocomplete="tel" hidden>
         <input id="authNin" placeholder="11-digit NIN" inputmode="numeric" minlength="11" maxlength="11" pattern="[0-9]{11}" autocomplete="off" hidden>
-        <input id="authGuarantorName" placeholder="Guarantor full name" autocomplete="name" hidden>
-        <input id="authGuarantorPhone" placeholder="Guarantor phone number" autocomplete="tel" hidden>
-        <input id="authBankName" placeholder="Bank name" autocomplete="organization" hidden>
-        <input id="authAccountName" placeholder="Account name" autocomplete="name" hidden>
+        <input id="authGuarantorName" placeholder="Guarantor full name" pattern="[A-Za-z][A-Za-z .'-]*" title="Use letters, spaces, apostrophes, or hyphens" autocomplete="name" hidden>
+        <input id="authGuarantorPhone" placeholder="Guarantor phone number" inputmode="tel" pattern="[0-9+() -]{7,}" title="Use a valid phone number" autocomplete="tel" hidden>
+        <input id="authBankName" placeholder="Bank name" pattern="[A-Za-z][A-Za-z .'-]*" title="Use letters, spaces, apostrophes, or hyphens" autocomplete="organization" hidden>
+        <input id="authAccountName" placeholder="Account name" pattern="[A-Za-z][A-Za-z .'-]*" title="Use letters, spaces, apostrophes, or hyphens" autocomplete="name" hidden>
         <input id="authAccountNumber" placeholder="10-digit account number" inputmode="numeric" minlength="10" maxlength="10" pattern="[0-9]{10}" autocomplete="off" hidden>
         <input id="authEmail" type="email" placeholder="Email address" autocomplete="email" required>
         <input id="authPassword" type="password" placeholder="Password (minimum 8 characters)" minlength="8" autocomplete="current-password" required>
