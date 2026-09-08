@@ -417,8 +417,10 @@ const server = http.createServer((req, res) => {
 
   if (url === '/api/riders/register' && req.method === 'POST') {
     readRequestBody(req, (parseError, credentials) => {
-      if (parseError || !credentials.name || !credentials.email || !credentials.password || String(credentials.password).length < 8 || !credentials.phone || !credentials.nin || !credentials.guarantorName || !credentials.guarantorPhone || !credentials.bankName || !credentials.accountName || !credentials.accountNumber) {
-        sendJson(res, 400, { error: 'Name, email, phone, NIN, guarantor, bank name, account name, account number, and a password of at least 8 characters are required' });
+      const nin = String(credentials.nin || '').trim();
+      const accountNumber = String(credentials.accountNumber || '').trim();
+      if (parseError || !credentials.name || !credentials.email || !credentials.password || String(credentials.password).length < 8 || !credentials.phone || !/^\d{11}$/.test(nin) || !credentials.guarantorName || !credentials.guarantorPhone || !credentials.bankName || !credentials.accountName || !/^\d{10}$/.test(accountNumber)) {
+        sendJson(res, 400, { error: 'Enter an 11-digit NIN, a 10-digit bank account number, and complete all other required rider details. Passwords must be at least 8 characters.' });
         return;
       }
       const riders = readJson('rider.json');
@@ -427,7 +429,7 @@ const server = http.createServer((req, res) => {
         sendJson(res, 409, { error: 'Rider email already registered' });
         return;
       }
-      const rider = { id: `RIDER-${Date.now()}`, name: String(credentials.name).trim(), email, phone: String(credentials.phone).trim(), nin: String(credentials.nin).trim(), guarantorName: String(credentials.guarantorName).trim(), guarantorPhone: String(credentials.guarantorPhone).trim(), bankName: String(credentials.bankName).trim(), accountName: String(credentials.accountName).trim(), accountNumber: String(credentials.accountNumber).trim(), password: String(credentials.password), status: 'offline', earningsPerDelivery: 1500, createdAt: new Date().toISOString() };
+      const rider = { id: `RIDER-${Date.now()}`, name: String(credentials.name).trim(), email, phone: String(credentials.phone).trim(), nin, guarantorName: String(credentials.guarantorName).trim(), guarantorPhone: String(credentials.guarantorPhone).trim(), bankName: String(credentials.bankName).trim(), accountName: String(credentials.accountName).trim(), accountNumber, password: String(credentials.password), status: 'offline', earningsPerDelivery: 1500, createdAt: new Date().toISOString() };
       riders.push(rider);
       writeJson('rider.json', riders);
       notifyEmail(email, 'Welcome to Amoo Delights delivery team', `Welcome ${rider.name}. Your rider account is ready.`, `<h2>Welcome, ${escapeEmailHtml(rider.name)}!</h2><p>Your Amoo Delights rider account is ready. You can now sign in to manage assigned deliveries.</p>`);
